@@ -17,14 +17,16 @@
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/edit_text"
                 android:hint="@string/prompt"
                 android:textSize="56sp"
                 app:monospace="@{true}"
                 android:inputType="textNoSuggestions"
                 android:imeOptions="actionSearch"
+                android:completionThreshold="1"
                 android:background="@null"
+                android:popupBackground="?attr/colorPrimary"
                 android:layout_gravity="center_horizontal|bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

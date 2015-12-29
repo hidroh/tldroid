@@ -11,7 +11,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -81,8 +83,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static class CursorAdapter extends ResourceCursorAdapter {
 
+        private final LayoutInflater mInflater;
+
         public CursorAdapter(final Context context) {
             super(context, R.layout.dropdown_item, null, false);
+            mInflater = LayoutInflater.from(context);
             setFilterQueryProvider(new FilterQueryProvider() {
                 @Override
                 public Cursor runQuery(CharSequence constraint) {
@@ -95,6 +100,17 @@ public class MainActivity extends AppCompatActivity {
                                     null);
                 }
             });
+        }
+
+        @Override
+        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            return newDropDownView(context, cursor, parent);
+        }
+
+        @Override
+        public View newDropDownView(Context context, Cursor cursor, ViewGroup parent) {
+            return DataBindingUtil.inflate(mInflater, R.layout.dropdown_item, parent, false)
+                    .getRoot();
         }
 
         @Override

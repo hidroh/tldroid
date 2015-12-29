@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?attr/listPreferredItemHeight"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="@dimen/padding">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@android:id/text1"
-        tools:text="git"
-        style="?android:attr/dropDownItemStyle"
-        android:textAppearance="?attr/textAppearanceLargePopupMenu"
-        android:textSize="28sp"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content" />
+    <data />
 
-    <TextView
-        android:id="@android:id/text2"
-        tools:text="common"
-        style="?android:attr/dropDownItemStyle"
-        android:textAppearance="?attr/textAppearanceSmallPopupMenu"
-        android:textColor="?android:attr/textColorSecondary"
-        android:singleLine="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding">
 
-</LinearLayout>
+        <TextView
+            android:id="@android:id/text1"
+            tools:text="git"
+            style="?android:attr/dropDownItemStyle"
+            android:textAppearance="?attr/textAppearanceLargePopupMenu"
+            android:textSize="28sp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            app:monospace="@{true}"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@android:id/text2"
+            tools:text="common"
+            style="?android:attr/dropDownItemStyle"
+            android:textAppearance="?attr/textAppearanceSmallPopupMenu"
+            android:textColor="?android:attr/textColorSecondary"
+            android:singleLine="true"
+            app:monospace="@{true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</layout>

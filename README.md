@@ -1,6 +1,8 @@
 ## tldroid
 [tldr](https://github.com/tldr-pages/tldr) Android client
 
+![](assets/tldroid.gif)
+
 ### Setup
 **Requirements**
 - Latest Android SDK tools

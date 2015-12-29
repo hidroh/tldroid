@@ -3,12 +3,12 @@ package io.github.hidroh.tldroid;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +39,7 @@ public class CommandActivity extends AppCompatActivity {
     private View mProgressBar;
     private String mContent;
     private String mQuery;
+    private ViewDataBinding mBinding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class CommandActivity extends AppCompatActivity {
         mQuery = getIntent().getStringExtra(EXTRA_QUERY);
         String platform = getIntent().getStringExtra(EXTRA_PLATFORM);
         setTitle(mQuery);
-        DataBindingUtil.setContentView(this, R.layout.activity_command);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_command);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
                 ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
@@ -56,8 +57,6 @@ public class CommandActivity extends AppCompatActivity {
         collapsingToolbar.setCollapsedTitleTypeface(Application.MONOSPACE_TYPEFACE);
         mProgressBar = findViewById(R.id.progress);
         mWebView = (WebView) findViewById(R.id.web_view);
-        mWebView.setBackgroundColor(ContextCompat.getColor(this,
-                Utils.getIdRes(this, android.R.attr.colorBackground)));
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -123,7 +122,7 @@ public class CommandActivity extends AppCompatActivity {
             // just display a generic message for all scenarios for now
             html = getString(R.string.empty_html);
         }
-        mWebView.loadDataWithBaseURL(null, Utils.wrapHtml(this, html), "text/html", "UTF-8", null);
+        mBinding.setVariable(io.github.hidroh.tldroid.BR.content, html);
     }
 
     private static class GetCommandTask extends AsyncTask<String, Void, String> {

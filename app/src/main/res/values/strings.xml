@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">tldroid</string>
     <string name="prompt">tldr_</string>
-    <string name="command_html" translatable="false">
+    <string name="styled_html" translatable="false">
         <![CDATA[
         <html>
             <head>

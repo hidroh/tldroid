@@ -2,7 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data>
+        <variable
+            name="content"
+            type="String" />
+    </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -34,11 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <WebView
+            <include
+                layout="@layout/web_view"
                 android:id="@+id/web_view"
-                android:scrollbarStyle="insideOverlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                app:content="@{content}" />
 
         </android.support.v4.widget.NestedScrollView>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data />
@@ -27,6 +28,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <TextView
+                android:id="@+id/prompt"
+                android:text=">"
+                android:textSize="56sp"
+                android:textColor="?android:attr/textColorHint"
+                app:monospace="@{true}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                tools:ignore="HardcodedText" />
+
             <AutoCompleteTextView
                 android:id="@+id/edit_text"
                 android:hint="@string/prompt"
@@ -37,9 +52,8 @@
                 android:completionThreshold="1"
                 android:background="@null"
                 android:popupBackground="?attr/colorPrimary"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@id/prompt"
                 android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

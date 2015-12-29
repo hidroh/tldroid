@@ -18,6 +18,7 @@
             android:layout_weight="1">
 
             <EditText
+                android:id="@+id/edit_text"
                 android:hint="@string/prompt"
                 android:textSize="56sp"
                 app:monospace="@{true}"

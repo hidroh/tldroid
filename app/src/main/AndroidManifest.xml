@@ -23,6 +23,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".CommandActivity">
+        </activity>
+
         <service android:name=".SyncService" android:exported="false" />
 
         <provider

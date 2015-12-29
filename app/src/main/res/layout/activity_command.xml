@@ -31,7 +31,6 @@
 
         <android.support.v4.widget.NestedScrollView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="?android:attr/colorBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">tldroid</string>
+    <string name="prompt">tldr_</string>
+</resources>

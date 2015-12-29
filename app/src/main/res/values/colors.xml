@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blackT87">#DE000000</color>
+    <color name="grey900">#212121</color>
+    <color name="solarizedOrange">#cb4b16</color>
+    <color name="solarizedBase1">#93a1a1</color>
+    <color name="solarizedBase01">#586e75</color>
+    <color name="solarizedBase02">#073642</color>
+    <color name="solarizedBase03">#002b36</color>
+</resources>

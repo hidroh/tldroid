@@ -5,12 +5,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ResourceCursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FilterQueryProvider;
@@ -23,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setContentView(this, R.layout.activity_main);
+        findViewById(R.id.info_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfo();
+            }
+        });
         mEditText = (AutoCompleteTextView) findViewById(R.id.edit_text);
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -52,6 +63,20 @@ public class MainActivity extends AppCompatActivity {
                 .putExtra(CommandActivity.EXTRA_QUERY, query)
                 .putExtra(CommandActivity.EXTRA_PLATFORM, platform));
         return true;
+    }
+
+    private void showInfo() {
+        WebView webView = new WebView(this);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient());
+        webView.setBackgroundColor(ContextCompat.getColor(this,
+                Utils.getIdRes(this, android.R.attr.colorBackground)));
+        webView.loadDataWithBaseURL(null, Utils.wrapHtml(this, getString(R.string.about_html)),
+                "text/html", "UTF-8", null);
+        new AlertDialog.Builder(this)
+                .setView(webView)
+                .create()
+                .show();
     }
 
     private static class CursorAdapter extends ResourceCursorAdapter {

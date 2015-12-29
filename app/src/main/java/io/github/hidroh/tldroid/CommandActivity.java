@@ -1,15 +1,11 @@
 package io.github.hidroh.tldroid;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.AttrRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
@@ -39,7 +35,6 @@ public class CommandActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = CommandActivity.class.getName() + ".EXTRA_QUERY";
     public static final String EXTRA_PLATFORM = CommandActivity.class.getName() + ".EXTRA_PLATFORM";
     private static final String STATE_CONTENT = "state:content";
-    private static final String FORMAT_HTML_COLOR = "%06X";
     private WebView mWebView;
     private View mProgressBar;
     private String mContent;
@@ -62,7 +57,7 @@ public class CommandActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.progress);
         mWebView = (WebView) findViewById(R.id.web_view);
         mWebView.setBackgroundColor(ContextCompat.getColor(this,
-                getIdRes(android.R.attr.colorBackground)));
+                Utils.getIdRes(this, android.R.attr.colorBackground)));
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -128,31 +123,7 @@ public class CommandActivity extends AppCompatActivity {
             // just display a generic message for all scenarios for now
             html = getString(R.string.empty_html);
         }
-        mWebView.loadDataWithBaseURL(null, wrap(html), "text/html", "UTF-8", null);
-    }
-
-    private String wrap(String html) {
-        return getString(R.string.command_html,
-                html,
-                toHtmlColor(android.R.attr.textColorPrimary),
-                toHtmlColor(android.R.attr.textColorLink),
-                toHtmlPx(R.dimen.activity_horizontal_margin));
-    }
-
-    private String toHtmlColor(@AttrRes int colorAttr) {
-        return String.format(FORMAT_HTML_COLOR, 0xFFFFFF &
-                ContextCompat.getColor(this, getIdRes(colorAttr)));
-    }
-
-    private float toHtmlPx(@DimenRes int dimenAttr) {
-        return getResources().getDimension(dimenAttr) / getResources().getDisplayMetrics().density;
-    }
-
-    private @IdRes int getIdRes(@AttrRes int attrRes) {
-        TypedArray ta = getTheme().obtainStyledAttributes(new int[]{attrRes});
-        int resId = ta.getResourceId(0, 0);
-        ta.recycle();
-        return resId;
+        mWebView.loadDataWithBaseURL(null, Utils.wrapHtml(this, html), "text/html", "UTF-8", null);
     }
 
     private static class GetCommandTask extends AsyncTask<String, Void, String> {

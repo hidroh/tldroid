@@ -30,9 +30,11 @@ import java.lang.ref.WeakReference;
 
 public class CommandActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = CommandActivity.class.getName() + ".EXTRA_QUERY";
+    private static final String STATE_CONTENT = "state:content";
     private static final String FORMAT_HTML_COLOR = "%06X";
     private WebView mWebView;
     private View mProgressBar;
+    private String mContent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +59,14 @@ public class CommandActivity extends AppCompatActivity {
                 mProgressBar.setVisibility(View.GONE);
             }
         });
-        new GetCommandTask(this).execute(query);
+        if (savedInstanceState != null) {
+            mContent = savedInstanceState.getString(STATE_CONTENT);
+        }
+        if (mContent == null) {
+            new GetCommandTask(this).execute(query);
+        } else {
+            render(mContent);
+        }
     }
 
     @Override
@@ -69,7 +78,14 @@ public class CommandActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_CONTENT, mContent);
+    }
+
     private void render(String html) {
+        mContent = html == null ? "" : html;
         if (TextUtils.isEmpty(html)) {
             return; // TODO
         }

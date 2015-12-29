@@ -15,9 +15,25 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("../tldroid.keystore")
+            storePassword "tldroid"
+            keyAlias "tldroid"
+            keyPassword "tldroid"
+        }
+    }
+
     buildTypes {
         debug {
-            testCoverageEnabled true
+          minifyEnabled true
+          shrinkResources true
+          proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+          proguardFile 'proguard-rules.pro'
+        }
+
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
             proguardFile getDefaultProguardFile('proguard-android-optimize.txt')

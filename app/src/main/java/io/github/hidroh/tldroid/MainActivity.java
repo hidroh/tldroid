@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.FilterQueryProvider;
@@ -69,15 +65,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showInfo() {
-        WebView webView = new WebView(this);
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient());
-        webView.setBackgroundColor(ContextCompat.getColor(this,
-                Utils.getIdRes(this, android.R.attr.colorBackground)));
-        webView.loadDataWithBaseURL(null, Utils.wrapHtml(this, getString(R.string.about_html)),
-                "text/html", "UTF-8", null);
+        ViewDataBinding binding = DataBindingUtil.inflate(getLayoutInflater(),
+                R.layout.web_view, null, false);
+        binding.setVariable(io.github.hidroh.tldroid.BR.content, getString(R.string.about_html));
         new AlertDialog.Builder(this)
-                .setView(webView)
+                .setView(binding.getRoot())
                 .create()
                 .show();
     }

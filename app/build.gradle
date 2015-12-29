@@ -15,6 +15,17 @@ android {
     dataBinding {
         enabled = true
     }
+
+    lintOptions {
+        htmlReport false
+        xmlReport false
+        textReport true
+        warningsAsErrors true
+        abortOnError true
+        informational 'InvalidPackage' // https://github.com/square/okio/issues/58
+        explainIssues false
+        absolutePaths false
+    }
 }
 
 dependencies {

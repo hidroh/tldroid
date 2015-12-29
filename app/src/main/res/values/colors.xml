@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blackT87">#DE000000</color>
     <color name="grey900">#212121</color>
     <color name="solarizedOrange">#cb4b16</color>
     <color name="solarizedBase1">#93a1a1</color>

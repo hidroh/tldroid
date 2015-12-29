@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.ResourceCursorAdapter;
@@ -109,18 +110,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public View newDropDownView(Context context, Cursor cursor, ViewGroup parent) {
-            return DataBindingUtil.inflate(mInflater, R.layout.dropdown_item, parent, false)
-                    .getRoot();
+            ViewDataBinding holder = DataBindingUtil.inflate(mInflater, R.layout.dropdown_item,
+                    parent, false);
+            View view = holder.getRoot();
+            view.setTag(R.id.dataBinding, holder);
+            return view;
         }
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ((TextView) view.findViewById(android.R.id.text1))
-                    .setText(cursor.getString(cursor.getColumnIndexOrThrow(
-                            TldrProvider.CommandEntry.COLUMN_NAME)));
-            ((TextView) view.findViewById(android.R.id.text2))
-                    .setText(cursor.getString(cursor.getColumnIndexOrThrow(
-                            TldrProvider.CommandEntry.COLUMN_PLATFORM)));
+            ((ViewDataBinding) view.getTag(R.id.dataBinding))
+                    .setVariable(io.github.hidroh.tldroid.BR.command,
+                            Bindings.Command.fromProvider(cursor));
         }
     }
 }

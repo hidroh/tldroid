@@ -1,5 +1,6 @@
 package io.github.hidroh.tldroid;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -11,10 +12,14 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -35,12 +40,13 @@ public class CommandActivity extends AppCompatActivity {
     private WebView mWebView;
     private View mProgressBar;
     private String mContent;
+    private String mQuery;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String query = getIntent().getStringExtra(EXTRA_QUERY);
-        setTitle(query);
+        mQuery = getIntent().getStringExtra(EXTRA_QUERY);
+        setTitle(mQuery);
         DataBindingUtil.setContentView(this, R.layout.activity_command);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME |
@@ -63,10 +69,31 @@ public class CommandActivity extends AppCompatActivity {
             mContent = savedInstanceState.getString(STATE_CONTENT);
         }
         if (mContent == null) {
-            new GetCommandTask(this).execute(query);
+            new GetCommandTask(this).execute(mQuery);
         } else {
             render(mContent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_share, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem itemShare = menu.findItem(R.id.menu_share);
+        boolean visible = !TextUtils.isEmpty(mContent);
+        itemShare.setVisible(visible);
+        if (visible) {
+            ((ShareActionProvider) MenuItemCompat.getActionProvider(itemShare))
+                    .setShareIntent(new Intent(Intent.ACTION_SEND)
+                            .setType("text/plain")
+                            .putExtra(Intent.EXTRA_SUBJECT, mQuery)
+                            .putExtra(Intent.EXTRA_TEXT, Html.fromHtml(mContent).toString()));
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -86,6 +113,7 @@ public class CommandActivity extends AppCompatActivity {
 
     private void render(String html) {
         mContent = html == null ? "" : html;
+        supportInvalidateOptionsMenu();
         if (TextUtils.isEmpty(html)) {
             return; // TODO
         }

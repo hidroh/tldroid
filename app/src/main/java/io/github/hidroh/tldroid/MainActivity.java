@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return actionId == EditorInfo.IME_ACTION_SEARCH && search();
+                return actionId == EditorInfo.IME_ACTION_SEARCH &&
+                        search(v.getText().toString(), null);
             }
         });
         mEditText.setAdapter(new CursorAdapter(this));
@@ -35,20 +36,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CharSequence text = ((TextView) view.findViewById(android.R.id.text1)).getText();
+                CharSequence platform = ((TextView) view.findViewById(android.R.id.text2)).getText();
                 mEditText.setText(text);
                 mEditText.setSelection(text.length());
-                search();
+                search(text, platform);
             }
         });
     }
 
-    private boolean search() {
-        String query = mEditText.getText().toString();
+    private boolean search(CharSequence query, CharSequence platform) {
         if (TextUtils.isEmpty(query)) {
             return false;
         }
         startActivity(new Intent(this, CommandActivity.class)
-                .putExtra(CommandActivity.EXTRA_QUERY, query));
+                .putExtra(CommandActivity.EXTRA_QUERY, query)
+                .putExtra(CommandActivity.EXTRA_PLATFORM, platform));
         return true;
     }
 

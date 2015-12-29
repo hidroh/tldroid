@@ -35,6 +35,7 @@ import java.lang.ref.WeakReference;
 
 public class CommandActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = CommandActivity.class.getName() + ".EXTRA_QUERY";
+    public static final String EXTRA_PLATFORM = CommandActivity.class.getName() + ".EXTRA_PLATFORM";
     private static final String STATE_CONTENT = "state:content";
     private static final String FORMAT_HTML_COLOR = "%06X";
     private WebView mWebView;
@@ -46,6 +47,7 @@ public class CommandActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQuery = getIntent().getStringExtra(EXTRA_QUERY);
+        String platform = getIntent().getStringExtra(EXTRA_PLATFORM);
         setTitle(mQuery);
         DataBindingUtil.setContentView(this, R.layout.activity_command);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -69,7 +71,7 @@ public class CommandActivity extends AppCompatActivity {
             mContent = savedInstanceState.getString(STATE_CONTENT);
         }
         if (mContent == null) {
-            new GetCommandTask(this).execute(mQuery);
+            new GetCommandTask(this, platform).execute(mQuery);
         } else {
             render(mContent);
         }
@@ -147,9 +149,11 @@ public class CommandActivity extends AppCompatActivity {
         private static final String BASE_URL = "https://raw.githubusercontent.com/tldr-pages/tldr/master/pages";
         private final WeakReference<CommandActivity> mCommandActivity;
         private final OkHttpClient mClient;
+        private final String mPlatform;
 
-        public GetCommandTask(CommandActivity commandActivity) {
+        public GetCommandTask(CommandActivity commandActivity, String platform) {
             mCommandActivity = new WeakReference<>(commandActivity);
+            mPlatform = platform;
             mClient = new OkHttpClient();
         }
 
@@ -158,12 +162,19 @@ public class CommandActivity extends AppCompatActivity {
             if (mCommandActivity.get() == null) {
                 return null;
             }
+            String nameQuery = params[0];
+            String selection;
+            String[] selectionArgs;
+            if (TextUtils.isEmpty(mPlatform)) {
+                selection = TldrProvider.CommandEntry.COLUMN_NAME + "=?";
+                selectionArgs = new String[]{nameQuery};
+            } else {
+                selection = TldrProvider.CommandEntry.COLUMN_NAME + "=? AND " +
+                        TldrProvider.CommandEntry.COLUMN_PLATFORM + "=?";
+                selectionArgs = new String[]{nameQuery, mPlatform};
+            }
             Cursor cursor = mCommandActivity.get().getContentResolver()
-                    .query(TldrProvider.URI_COMMAND,
-                            null,
-                            TldrProvider.CommandEntry.COLUMN_NAME + "=?",
-                            new String[]{params[0]},
-                            null);
+                    .query(TldrProvider.URI_COMMAND, null, selection, selectionArgs, null);
             if (cursor == null) {
                 return null;
             }

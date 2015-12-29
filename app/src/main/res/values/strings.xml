@@ -13,13 +13,20 @@
                         font-family: tldr;
                         font-size: 14px;
                         color: #%2$s;
-                        margin: %3$fpx %3$fpx %3$fpx %3$fpx;
+                        margin: %4$fpx %4$fpx %4$fpx %4$fpx;
                     }
+                    a {color: #%3$s;}
                     pre {white-space: pre-wrap;}
                 </style>
             </head>
             <body>%1$s</body>
             </html>"
+        ]]>
+    </string>
+    <string name="empty_html">
+        <![CDATA[
+            <h1>This command is not yet available.</h1>
+            <h2><a href="https://github.com/tldr-pages/tldr/blob/master/CONTRIBUTING.md">Submit new command to tldr</a></h2>
         ]]>
     </string>
     <string name="share">Share</string>

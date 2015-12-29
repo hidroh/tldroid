@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -22,6 +23,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -61,10 +63,16 @@ public class CommandActivity extends AppCompatActivity {
         mWebView = (WebView) findViewById(R.id.web_view);
         mWebView.setBackgroundColor(ContextCompat.getColor(this,
                 getIdRes(android.R.attr.colorBackground)));
+        mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
                 mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                mProgressBar.setVisibility(View.VISIBLE);
             }
         });
         if (savedInstanceState != null) {
@@ -117,7 +125,8 @@ public class CommandActivity extends AppCompatActivity {
         mContent = html == null ? "" : html;
         supportInvalidateOptionsMenu();
         if (TextUtils.isEmpty(html)) {
-            return; // TODO
+            // just display a generic message for all scenarios for now
+            html = getString(R.string.empty_html);
         }
         mWebView.loadDataWithBaseURL(null, wrap(html), "text/html", "UTF-8", null);
     }
@@ -126,6 +135,7 @@ public class CommandActivity extends AppCompatActivity {
         return getString(R.string.command_html,
                 html,
                 toHtmlColor(android.R.attr.textColorPrimary),
+                toHtmlColor(android.R.attr.textColorLink),
                 toHtmlPx(R.dimen.activity_horizontal_margin));
     }
 

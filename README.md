@@ -23,7 +23,7 @@
 - [Txtmark](https://github.com/rjeschke/txtmark) - Java markdown processor
 - [tldr-pages](https://github.com/tldr-pages/tldr) - community-driven man pages
 
-**Build**
+**Build** [![Build Status](https://travis-ci.org/hidroh/tldroid.svg?branch=master)](https://travis-ci.org/hidroh/tldroid)
 
     ./gradlew :app:assembleDebug
 

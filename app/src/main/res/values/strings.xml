@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">tldroid</string>
     <string name="prompt">tldr_</string>
+    <string name="command_html" translatable="false">
+        <![CDATA[
+        <html>
+            <head>
+                <style type="text/css">
+                    @font-face {
+                        font-family: tldr;
+                        src: url("file:///android_asset/RobotoMono-Regular.ttf")}
+                    body {
+                        font-family: tldr;
+                        font-size: 14px;
+                        color: #%2$s;
+                        margin: %3$fpx %3$fpx %3$fpx %3$fpx;
+                    }
+                    pre {white-space: pre-wrap;}
+                </style>
+            </head>
+            <body>%1$s</body>
+            </html>"
+        ]]>
+    </string>
 </resources>

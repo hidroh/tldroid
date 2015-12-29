@@ -2,7 +2,7 @@
 [tldr](https://github.com/tldr-pages/tldr) Android client
 
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png)](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)
+[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)
 
 ![](assets/tldroid.gif)
 

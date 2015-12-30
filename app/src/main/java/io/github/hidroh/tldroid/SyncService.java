@@ -8,6 +8,7 @@ import android.content.OperationApplicationException;
 import android.os.RemoteException;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -45,7 +46,7 @@ public class SyncService extends IntentService {
         Commands commands;
         try {
             commands =new GsonBuilder().create().fromJson(response.body().string(), Commands.class);
-        } catch (IOException e) {
+        } catch (IOException | JsonSyntaxException e) {
             return;
         }
         if (commands.commands == null || commands.commands.length == 0) {

@@ -6,10 +6,20 @@ android {
 
     defaultConfig {
         applicationId "io.github.hidroh.tldroid"
-        minSdkVersion 7
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+    }
+
+    buildTypes {
+        minified.initWith(debug)
+        minified {
+            minifyEnabled true
+            shrinkResources true
+            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile 'proguard-rules.pro'
+        }
     }
 
     dataBinding {

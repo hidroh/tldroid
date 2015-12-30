@@ -35,8 +35,6 @@ public class CommandActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = CommandActivity.class.getName() + ".EXTRA_QUERY";
     public static final String EXTRA_PLATFORM = CommandActivity.class.getName() + ".EXTRA_PLATFORM";
     private static final String STATE_CONTENT = "state:content";
-    private WebView mWebView;
-    private View mProgressBar;
     private String mContent;
     private String mQuery;
     private ViewDataBinding mBinding;
@@ -55,18 +53,18 @@ public class CommandActivity extends AppCompatActivity {
                 findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbar.setExpandedTitleTypeface(Application.MONOSPACE_TYPEFACE);
         collapsingToolbar.setCollapsedTitleTypeface(Application.MONOSPACE_TYPEFACE);
-        mProgressBar = findViewById(R.id.progress);
-        mWebView = (WebView) findViewById(R.id.web_view);
-        mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.setWebViewClient(new WebViewClient() {
+        final View progressBar = findViewById(R.id.progress);
+        WebView webView = (WebView) findViewById(R.id.web_view);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                mProgressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                mProgressBar.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
             }
         });
         if (savedInstanceState != null) {

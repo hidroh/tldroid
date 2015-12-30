@@ -117,5 +117,11 @@ public class MainActivity extends AppCompatActivity {
                     Bindings.Command.fromProvider(cursor));
             binding.setVariable(io.github.hidroh.tldroid.BR.highlight, mQueryString);
         }
+
+        @Override
+        public CharSequence convertToString(Cursor cursor) {
+            return cursor.getString(cursor.getColumnIndexOrThrow(
+                    TldrProvider.CommandEntry.COLUMN_NAME));
+        }
     }
 }

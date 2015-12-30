@@ -9,7 +9,11 @@ import android.databinding.BindingAdapter;
 import android.support.annotation.AttrRes;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -21,6 +25,23 @@ public class Bindings {
         if (enabled) {
             textView.setTypeface(Application.MONOSPACE_TYPEFACE);
         }
+    }
+
+    @BindingAdapter({"bind:highlightText", "bind:highlightColor"})
+    public static void highlightText(TextView textView, String highlightText,
+                                     @AttrRes int highlightColor) {
+        if (TextUtils.isEmpty(highlightText)) {
+            return;
+        }
+        Spannable spannable = new SpannableString(textView.getText());
+        int start = TextUtils.indexOf(spannable, highlightText);
+        if (start >= 0) {
+            spannable.setSpan(new ForegroundColorSpan(ContextCompat.getColor(
+                    textView.getContext(), getIdRes(textView.getContext(), highlightColor))),
+                    start, start + highlightText.length(),
+                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        textView.setText(spannable);
     }
 
     @BindingAdapter({

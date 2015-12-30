@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CharSequence text = ((TextView) view.findViewById(android.R.id.text1)).getText();
                 CharSequence platform = ((TextView) view.findViewById(android.R.id.text2)).getText();
-                mEditText.setText(text);
+                mEditText.setText(text.toString());
                 mEditText.setSelection(text.length());
-                search(text, platform);
+                search(text.toString(), platform);
             }
         });
     }
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private static class CursorAdapter extends ResourceCursorAdapter {
 
         private final LayoutInflater mInflater;
+        private String mQueryString;
 
         public CursorAdapter(final Context context) {
             super(context, R.layout.dropdown_item, null, false);
@@ -84,12 +85,12 @@ public class MainActivity extends AppCompatActivity {
             setFilterQueryProvider(new FilterQueryProvider() {
                 @Override
                 public Cursor runQuery(CharSequence constraint) {
-                    String queryString = constraint != null ? constraint.toString() : "";
+                    mQueryString = constraint != null ? constraint.toString() : "";
                     return context.getContentResolver()
                             .query(TldrProvider.URI_COMMAND,
                                     null,
                                     TldrProvider.CommandEntry.COLUMN_NAME + " LIKE ?",
-                                    new String[]{"%" + queryString + "%"},
+                                    new String[]{"%" + mQueryString + "%"},
                                     null);
                 }
             });
@@ -111,9 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            ((ViewDataBinding) view.getTag(R.id.dataBinding))
-                    .setVariable(io.github.hidroh.tldroid.BR.command,
-                            Bindings.Command.fromProvider(cursor));
+            ViewDataBinding binding = (ViewDataBinding) view.getTag(R.id.dataBinding);
+            binding.setVariable(io.github.hidroh.tldroid.BR.command,
+                    Bindings.Command.fromProvider(cursor));
+            binding.setVariable(io.github.hidroh.tldroid.BR.highlight, mQueryString);
         }
     }
 }

@@ -7,6 +7,9 @@
         <variable
             name="command"
             type="io.github.hidroh.tldroid.Bindings.Command" />
+        <variable
+            name="highlight"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -20,6 +23,8 @@
             android:id="@android:id/text1"
             tools:text="git"
             android:text="@{command.name}"
+            app:highlightColor="@{io.github.hidroh.tldroid.R.attr.colorAccent}"
+            app:highlightText="@{highlight}"
             style="?android:attr/dropDownItemStyle"
             android:textAppearance="?attr/textAppearanceLargePopupMenu"
             android:textSize="28sp"

@@ -28,6 +28,7 @@ public class Bindings {
             "bind:htmlBackgroundColor",
             "bind:htmlTextColor",
             "bind:htmlLinkColor",
+            "bind:htmlTextSize",
             "bind:htmlMargin"
     })
     public static void setHtml(WebView webView,
@@ -35,6 +36,7 @@ public class Bindings {
                                @AttrRes int backgroundColor,
                                @AttrRes int textColor,
                                @AttrRes int linkColor,
+                               float textSize,
                                float margin) {
         if (TextUtils.isEmpty(html)) {
             return;
@@ -42,18 +44,20 @@ public class Bindings {
         webView.setBackgroundColor(ContextCompat.getColor(webView.getContext(),
                 getIdRes(webView.getContext(), backgroundColor)));
         webView.loadDataWithBaseURL(null,
-                wrapHtml(webView.getContext(), html, textColor, linkColor, margin),
+                wrapHtml(webView.getContext(), html, textColor, linkColor, textSize, margin),
                 "text/html", "UTF-8", null);
     }
 
     private static String wrapHtml(Context context, String html,
                                    @AttrRes int textColor,
                                    @AttrRes int linkColor,
+                                   float textSize,
                                    float margin) {
         return context.getString(R.string.styled_html,
                 html,
                 toHtmlColor(context, textColor),
                 toHtmlColor(context, linkColor),
+                toHtmlPx(context, textSize),
                 toHtmlPx(context, margin));
     }
 

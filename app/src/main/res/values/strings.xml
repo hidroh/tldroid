@@ -11,9 +11,9 @@
                         src: url("file:///android_asset/RobotoMono-Regular.ttf")}
                     body {
                         font-family: tldr;
-                        font-size: 14px;
+                        font-size: %4$fpx;
                         color: #%2$s;
-                        margin: %4$fpx %4$fpx %4$fpx %4$fpx;
+                        margin: %5$fpx %5$fpx %5$fpx %5$fpx;
                     }
                     a {color: #%3$s;}
                     pre {white-space: pre-wrap;}

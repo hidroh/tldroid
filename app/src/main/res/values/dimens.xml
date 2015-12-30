@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="appbar_size">192dp</dimen>
     <dimen name="padding">8dp</dimen>
+    <dimen name="text_size">14sp</dimen>
 </resources>

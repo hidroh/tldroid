@@ -12,6 +12,16 @@ android {
         versionName "1.0"
     }
 
+    buildTypes {
+        minified.initWith(debug)
+        minified {
+            minifyEnabled true
+            shrinkResources true
+            proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
+            proguardFile 'proguard-rules.pro'
+        }
+    }
+
     dataBinding {
         enabled = true
     }

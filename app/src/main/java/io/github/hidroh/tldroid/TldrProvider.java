@@ -112,6 +112,7 @@ public class TldrProvider extends ContentProvider {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL(SQL_DROP_COMMAND_TABLE);
+            db.execSQL(SQL_CREATE_COMMAND_TABLE);
         }
     }
 }

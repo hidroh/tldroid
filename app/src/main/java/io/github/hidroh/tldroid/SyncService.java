@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class SyncService extends IntentService {
     private static final String TAG = SyncService.class.getSimpleName();
-    private static final String INDEX_URL = "https://raw.githubusercontent.com/tldr-pages/tldr/master/pages/index.json";
+    private static final String INDEX_URL = "http://tldr-pages.github.io/assets/index.json";
     private OkHttpClient mClient;
 
     public SyncService() {

@@ -14,12 +14,20 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import okio.BufferedSink;
+import okio.Okio;
 
 public class SyncService extends IntentService {
     private static final String TAG = SyncService.class.getSimpleName();
     private static final String INDEX_URL = "http://tldr-pages.github.io/assets/index.json";
+    private static final String ZIP_URL = "http://tldr-pages.github.io/assets/tldr.zip";
+    public static final String EXTRA_ASSET_TYPE = TAG + ".EXTRA_ASSET_TYPE";
+    public static final int ASSET_TYPE_INDEX = 0;
+    public static final int ASSET_TYPE_ZIP = 1;
     private OkHttpClient mClient;
 
     public SyncService() {
@@ -34,6 +42,14 @@ public class SyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if (intent.getIntExtra(EXTRA_ASSET_TYPE, ASSET_TYPE_INDEX) == ASSET_TYPE_INDEX) {
+            syncIndex();
+        } else {
+            syncZip();
+        }
+    }
+
+    private void syncIndex() {
         Response response;
         try {
             response = mClient.newCall(new Request.Builder()
@@ -66,6 +82,21 @@ public class SyncService extends IntentService {
             cr.applyBatch(TldrProvider.AUTHORITY, operations);
             cr.notifyChange(TldrProvider.URI_COMMAND, null);
         } catch (RemoteException | OperationApplicationException e) {
+            // no op
+        }
+    }
+
+    private void syncZip() {
+        try {
+            Response response = mClient.newCall(new Request.Builder()
+                    .url(HttpUrl.parse(ZIP_URL))
+                    .build())
+                    .execute();
+            File file = new File(getCacheDir(), GetCommandTask.ZIP_FILENAME);
+            BufferedSink sink = Okio.buffer(Okio.sink(file));
+            sink.writeAll(response.body().source());
+            sink.close();
+        } catch (IOException e) {
             // no op
         }
     }

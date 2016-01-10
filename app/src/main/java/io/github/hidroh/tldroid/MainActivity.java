@@ -100,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
                     mQueryString = constraint != null ? constraint.toString() : "";
                     return context.getContentResolver()
                             .query(TldrProvider.URI_COMMAND,
-                                    null,
+                                    new String[]{TldrProvider.CommandEntry._ID,
+                                            TldrProvider.CommandEntry.COLUMN_NAME,
+                                            TldrProvider.CommandEntry.COLUMN_PLATFORM},
                                     TldrProvider.CommandEntry.COLUMN_NAME + " LIKE ?",
                                     new String[]{"%" + mQueryString + "%"},
                                     null);

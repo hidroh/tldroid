@@ -1,5 +1,5 @@
 ## tldroid
-[tldr](https://github.com/tldr-pages/tldr) Android client using [data binding](http://developer.android.com/tools/data-binding/guide.html), compatible with Android 2.3 and up.
+[tldr](https://github.com/tldr-pages/tldr) Android client using [data binding](http://developer.android.com/tools/data-binding/guide.html), compatible with Android 2.1 and up.
 
 
 [![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)

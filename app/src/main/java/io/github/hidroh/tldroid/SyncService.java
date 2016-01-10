@@ -12,6 +12,7 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -43,11 +44,9 @@ public class SyncService extends IntentService {
     private void syncIndex() {
         Commands commands;
         try {
-            String response = Okio.buffer(Okio.source(new URL(INDEX_URL)
-                    .openConnection()
-                    .getInputStream()))
-                    .readUtf8();
-            commands = new GsonBuilder().create().fromJson(response, Commands.class);
+            InputStream response = new URL(INDEX_URL).openConnection().getInputStream();
+            String responseString = Utils.readUtf8(response);
+            commands = new GsonBuilder().create().fromJson(responseString, Commands.class);
         } catch (IOException | JsonSyntaxException e) {
             return;
         }

@@ -17,6 +17,7 @@
                     }
                     a {color: #%3$s;}
                     pre {white-space: pre-wrap;}
+                    code {color: #%3$s;}
                 </style>
             </head>
             <body>%1$s</body>

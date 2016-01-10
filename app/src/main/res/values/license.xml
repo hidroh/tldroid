@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-        <string name="about_html" tools:ignore="TypographyDashes,TypographyOther">
+    <string name="about_html" tools:ignore="TypographyDashes,TypographyOther">
         <![CDATA[
-            <h1>Information</h1>
             <h2>License</h2>
             <p>Copyright 2015 Ha Duy Trung</p>
             <p>Licensed under the Apache License, Version 2.0 (the "License");

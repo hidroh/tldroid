@@ -29,6 +29,14 @@
             <h2><a href="https://github.com/tldr-pages/tldr/blob/master/CONTRIBUTING.md">Submit new command to tldr</a></h2>
         ]]>
     </string>
+    <string name="info_html">
+        <![CDATA[
+            <h2>Application</h2>
+            <p>Last refreshed: %1$s</p>
+            <p>Total commands: %2$d</p>
+        ]]>
+    </string>
     <string name="share">Share</string>
     <string name="info">Information</string>
+    <string name="never">Never</string>
 </resources>

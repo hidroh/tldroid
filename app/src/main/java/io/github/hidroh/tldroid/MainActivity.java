@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +69,17 @@ public class MainActivity extends AppCompatActivity {
     private void showInfo() {
         ViewDataBinding binding = DataBindingUtil.inflate(getLayoutInflater(),
                 R.layout.web_view, null, false);
-        binding.setVariable(io.github.hidroh.tldroid.BR.content, getString(R.string.about_html));
+        long lastRefreshed = PreferenceManager.getDefaultSharedPreferences(this)
+                .getLong(SyncService.PREF_LAST_REFRESHED, 0L);
+        CharSequence lastRefreshedText = lastRefreshed > 0 ?
+                DateUtils.getRelativeDateTimeString(this, lastRefreshed,
+                    DateUtils.HOUR_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, 0) :
+                getString(R.string.never);
+        int totalCommands = PreferenceManager.getDefaultSharedPreferences(this)
+                .getInt(SyncService.PREF_COMMAND_COUNT, 0);
+        binding.setVariable(io.github.hidroh.tldroid.BR.content,
+                getString(R.string.info_html, lastRefreshedText, totalCommands) +
+                        getString(R.string.about_html));
         new AlertDialog.Builder(this)
                 .setView(binding.getRoot())
                 .create()

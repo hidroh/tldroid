@@ -5,27 +5,30 @@ import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.OperationApplicationException;
+import android.content.SharedPreferences;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
 import okio.BufferedSink;
 import okio.Okio;
-import okio.Source;
 
 public class SyncService extends IntentService {
     private static final String TAG = SyncService.class.getSimpleName();
     private static final String INDEX_URL = "http://tldr-pages.github.io/assets/index.json";
     private static final String ZIP_URL = "http://tldr-pages.github.io/assets/tldr.zip";
     public static final String EXTRA_ASSET_TYPE = TAG + ".EXTRA_ASSET_TYPE";
+    public static final String PREF_LAST_REFRESHED = INDEX_URL;
+    public static final String PREF_COMMAND_COUNT = "PREF_COMMAND_COUNT";
     public static final int ASSET_TYPE_INDEX = 0;
     public static final int ASSET_TYPE_ZIP = 1;
 
@@ -44,24 +47,72 @@ public class SyncService extends IntentService {
 
     private void syncIndex() {
         HttpURLConnection connection;
-        try {
-            connection = (HttpURLConnection) new URL(INDEX_URL).openConnection();
-        } catch (IOException e) {
+        if ((connection = connect(INDEX_URL)) == null) {
             return;
         }
-        Commands commands;
         try {
-            InputStream response = connection.getInputStream();
-            String responseString = Utils.readUtf8(response);
-            commands = new GsonBuilder().create().fromJson(responseString, Commands.class);
+            persist(new GsonBuilder()
+                    .create()
+                    .fromJson(Utils.readUtf8(connection.getInputStream()),
+                            Commands.class));
         } catch (IOException | JsonSyntaxException e) {
-            return;
+            Log.e(TAG, e.toString());
         } finally {
             connection.disconnect();
         }
+    }
+
+    private void syncZip() {
+        HttpURLConnection connection;
+        if ((connection = connect(ZIP_URL)) == null) {
+            return;
+        }
+        try {
+            BufferedSink sink = Okio.buffer(Okio.sink(new File(getCacheDir(),
+                    GetCommandTask.ZIP_FILENAME)));
+            sink.writeAll(Okio.source(connection.getInputStream()));
+            sink.close();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    private HttpURLConnection connect(String url) {
+        HttpURLConnection connection;
+        try {
+            connection = (HttpURLConnection) new URL(url).openConnection();
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        connection.setIfModifiedSince(sharedPrefs.getLong(url, 0L));
+        try {
+            connection.connect();
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+                connection.disconnect();
+                return null;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+            return null;
+        }
+        sharedPrefs.edit()
+                .putLong(url, connection.getLastModified())
+                .commit();
+        return connection;
+    }
+
+    private void persist(Commands commands) {
         if (commands.commands == null || commands.commands.length == 0) {
             return;
         }
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putInt(PREF_COMMAND_COUNT, commands.commands.length)
+                .commit();
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         for (Command command : commands.commands) {
             for (String platform : command.platform) {
@@ -77,26 +128,6 @@ public class SyncService extends IntentService {
             cr.notifyChange(TldrProvider.URI_COMMAND, null);
         } catch (RemoteException | OperationApplicationException e) {
             // no op
-        }
-    }
-
-    private void syncZip() {
-        HttpURLConnection connection;
-        try {
-            connection = (HttpURLConnection) new URL(ZIP_URL).openConnection();
-        } catch (IOException e) {
-            return;
-        }
-        try {
-            Source response = Okio.source(connection.getInputStream());
-            File file = new File(getCacheDir(), GetCommandTask.ZIP_FILENAME);
-            BufferedSink sink = Okio.buffer(Okio.sink(file));
-            sink.writeAll(response);
-            sink.close();
-        } catch (IOException e) {
-            // no op
-        } finally {
-            connection.disconnect();
         }
     }
 

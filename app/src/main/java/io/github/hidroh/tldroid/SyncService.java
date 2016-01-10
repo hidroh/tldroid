@@ -13,6 +13,7 @@ import com.google.gson.JsonSyntaxException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -42,13 +43,21 @@ public class SyncService extends IntentService {
     }
 
     private void syncIndex() {
+        HttpURLConnection connection;
+        try {
+            connection = (HttpURLConnection) new URL(INDEX_URL).openConnection();
+        } catch (IOException e) {
+            return;
+        }
         Commands commands;
         try {
-            InputStream response = new URL(INDEX_URL).openConnection().getInputStream();
+            InputStream response = connection.getInputStream();
             String responseString = Utils.readUtf8(response);
             commands = new GsonBuilder().create().fromJson(responseString, Commands.class);
         } catch (IOException | JsonSyntaxException e) {
             return;
+        } finally {
+            connection.disconnect();
         }
         if (commands.commands == null || commands.commands.length == 0) {
             return;
@@ -72,16 +81,22 @@ public class SyncService extends IntentService {
     }
 
     private void syncZip() {
+        HttpURLConnection connection;
         try {
-            Source response = Okio.source(new URL(ZIP_URL)
-                    .openConnection()
-                    .getInputStream());
+            connection = (HttpURLConnection) new URL(INDEX_URL).openConnection();
+        } catch (IOException e) {
+            return;
+        }
+        try {
+            Source response = Okio.source(connection.getInputStream());
             File file = new File(getCacheDir(), GetCommandTask.ZIP_FILENAME);
             BufferedSink sink = Okio.buffer(Okio.sink(file));
             sink.writeAll(response);
             sink.close();
         } catch (IOException e) {
             // no op
+        } finally {
+            connection.disconnect();
         }
     }
 

@@ -10,6 +10,9 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         MONOSPACE_TYPEFACE = Typeface.createFromAsset(getAssets(), "RobotoMono-Regular.ttf");
-        startService(new Intent(this, SyncService.class));
+        startService(new Intent(this, SyncService.class)
+                .putExtra(SyncService.EXTRA_ASSET_TYPE, SyncService.ASSET_TYPE_INDEX));
+        startService(new Intent(this, SyncService.class)
+                .putExtra(SyncService.EXTRA_ASSET_TYPE, SyncService.ASSET_TYPE_ZIP));
     }
 }

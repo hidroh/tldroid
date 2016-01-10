@@ -1,11 +1,9 @@
 package io.github.hidroh.tldroid;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,18 +16,9 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.github.rjeschke.txtmark.Processor;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 
 public class CommandActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = CommandActivity.class.getName() + ".EXTRA_QUERY";
@@ -53,18 +42,13 @@ public class CommandActivity extends AppCompatActivity {
                 findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbar.setExpandedTitleTypeface(Application.MONOSPACE_TYPEFACE);
         collapsingToolbar.setCollapsedTitleTypeface(Application.MONOSPACE_TYPEFACE);
-        final View progressBar = findViewById(R.id.progress);
         WebView webView = (WebView) findViewById(R.id.web_view);
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view, String url) {
-                progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                progressBar.setVisibility(View.VISIBLE);
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
             }
         });
         if (savedInstanceState != null) {
@@ -113,7 +97,7 @@ public class CommandActivity extends AppCompatActivity {
         outState.putString(STATE_CONTENT, mContent);
     }
 
-    private void render(String html) {
+    void render(String html) {
         mContent = html == null ? "" : html;
         supportInvalidateOptionsMenu();
         if (TextUtils.isEmpty(html)) {
@@ -123,71 +107,4 @@ public class CommandActivity extends AppCompatActivity {
         mBinding.setVariable(io.github.hidroh.tldroid.BR.content, html);
     }
 
-    private static class GetCommandTask extends AsyncTask<String, Void, String> {
-        private static final String BASE_URL = "https://raw.githubusercontent.com/tldr-pages/tldr/master/pages";
-        private final WeakReference<CommandActivity> mCommandActivity;
-        private final OkHttpClient mClient;
-        private final String mPlatform;
-
-        public GetCommandTask(CommandActivity commandActivity, String platform) {
-            mCommandActivity = new WeakReference<>(commandActivity);
-            mPlatform = platform;
-            mClient = new OkHttpClient();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            if (mCommandActivity.get() == null) {
-                return null;
-            }
-            String nameQuery = params[0];
-            String selection;
-            String[] selectionArgs;
-            if (TextUtils.isEmpty(mPlatform)) {
-                selection = TldrProvider.CommandEntry.COLUMN_NAME + "=?";
-                selectionArgs = new String[]{nameQuery};
-            } else {
-                selection = TldrProvider.CommandEntry.COLUMN_NAME + "=? AND " +
-                        TldrProvider.CommandEntry.COLUMN_PLATFORM + "=?";
-                selectionArgs = new String[]{nameQuery, mPlatform};
-            }
-            Cursor cursor = mCommandActivity.get().getContentResolver()
-                    .query(TldrProvider.URI_COMMAND, null, selection, selectionArgs, null);
-            if (cursor == null) {
-                return null;
-            }
-            String platform = null;
-            if (cursor.moveToFirst()) {
-                platform = cursor.getString(cursor.getColumnIndexOrThrow(
-                        TldrProvider.CommandEntry.COLUMN_PLATFORM));
-            }
-            cursor.close();
-            if (TextUtils.isEmpty(platform)) {
-                return null;
-            }
-            String markdown;
-            try {
-                markdown = mClient.newCall(new Request.Builder()
-                        .url(HttpUrl.parse(BASE_URL)
-                                .newBuilder()
-                                .addPathSegment(platform)
-                                .addPathSegment(params[0] + ".md")
-                                .build())
-                        .build())
-                        .execute()
-                        .body()
-                        .string();
-            } catch (IOException e) {
-                return null;
-            }
-            return Processor.process(markdown);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if (mCommandActivity.get() != null) {
-                mCommandActivity.get().render(s);
-            }
-        }
-    }
 }

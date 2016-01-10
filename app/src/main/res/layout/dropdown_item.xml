@@ -27,7 +27,7 @@
             app:highlightText="@{highlight}"
             style="?android:attr/dropDownItemStyle"
             android:textAppearance="?attr/textAppearanceLargePopupMenu"
-            android:textSize="28sp"
+            android:textSize="@dimen/text_size_medium"
             android:singleLine="true"
             android:ellipsize="end"
             app:monospace="@{true}"

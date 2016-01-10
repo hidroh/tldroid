@@ -32,7 +32,7 @@
             <TextView
                 android:id="@+id/prompt"
                 android:text=">"
-                android:textSize="56sp"
+                android:textSize="@dimen/text_size_large"
                 android:textColor="?android:attr/textColorHint"
                 app:monospace="@{true}"
                 android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             <AutoCompleteTextView
                 android:id="@+id/edit_text"
                 android:hint="@string/prompt"
-                android:textSize="56sp"
+                android:textSize="@dimen/text_size_large"
                 app:monospace="@{true}"
                 android:inputType="textNoSuggestions"
                 android:imeOptions="actionSearch"

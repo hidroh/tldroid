@@ -83,7 +83,7 @@ public class SyncService extends IntentService {
     private void syncZip() {
         HttpURLConnection connection;
         try {
-            connection = (HttpURLConnection) new URL(INDEX_URL).openConnection();
+            connection = (HttpURLConnection) new URL(ZIP_URL).openConnection();
         } catch (IOException e) {
             return;
         }

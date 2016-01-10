@@ -11,9 +11,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.zip.ZipFile;
 
-import okio.BufferedSource;
-import okio.Okio;
-
 class GetCommandTask extends AsyncTask<String, Void, String> {
     public static final String ZIP_FILENAME = "tldr.zip";
     private static final String COMMAND_PATH = "pages/%1$s/%2$s.md";
@@ -89,12 +86,8 @@ class GetCommandTask extends AsyncTask<String, Void, String> {
             return null;
         }
         try {
-            BufferedSource source = Okio.buffer(Okio.source(
-                    mZipFile.getInputStream(mZipFile.getEntry(
-                            String.format(COMMAND_PATH, platform, name)))));
-            String markdown = source.readUtf8();
-            source.close();
-            return markdown;
+            return Utils.readUtf8(mZipFile.getInputStream(mZipFile.getEntry(
+                    String.format(COMMAND_PATH, platform, name))));
         } catch (IOException e) {
             return null;
         }

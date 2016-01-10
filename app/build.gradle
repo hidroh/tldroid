@@ -8,7 +8,7 @@ android {
         applicationId "io.github.hidroh.tldroid"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 2
+        versionCode 3
         versionName "1.0"
     }
 
@@ -42,5 +42,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.github.rjeschke:txtmark:0.13'
-    compile 'com.squareup.okhttp:okhttp:2.7.0'
+    compile 'com.squareup.okhttp:okhttp:2.7.1'
 }

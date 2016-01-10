@@ -24,6 +24,8 @@ public class TldrProvider extends ContentProvider {
         String MIME_TYPE = "vnd.android.cursor.dir/vnd." + AUTHORITY + "." + TABLE_NAME;
         String COLUMN_NAME = "name";
         String COLUMN_PLATFORM = "platform";
+        String COLUMN_TEXT = "text";
+        String COLUMN_MODIFIED = "modified";
     }
 
     private DbHelper mDbHelper;
@@ -85,16 +87,19 @@ public class TldrProvider extends ContentProvider {
 
     private static class DbHelper extends SQLiteOpenHelper {
         private static final String DB_NAME = "tldr.db";
-        private static final int DB_VERSION = 1;
+        private static final int DB_VERSION = 2;
         private static final String TEXT_TYPE = " TEXT";
         private static final String INTEGER_TYPE = " INTEGER";
         private static final String PRIMARY_KEY = " PRIMARY KEY";
+        private static final String DEFAULT_INTEGER = " DEFAULT -1";
         private static final String COMMA_SEP = ",";
         private static final String SQL_CREATE_COMMAND_TABLE =
                 "CREATE TABLE " + CommandEntry.TABLE_NAME + " (" +
                         CommandEntry._ID + INTEGER_TYPE +  PRIMARY_KEY + COMMA_SEP +
                         CommandEntry.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                         CommandEntry.COLUMN_PLATFORM + TEXT_TYPE + COMMA_SEP +
+                        CommandEntry.COLUMN_TEXT + TEXT_TYPE + COMMA_SEP +
+                        CommandEntry.COLUMN_MODIFIED + INTEGER_TYPE + DEFAULT_INTEGER + COMMA_SEP +
                         " UNIQUE (" + CommandEntry.COLUMN_NAME + ", " +
                         CommandEntry.COLUMN_PLATFORM + ") ON CONFLICT REPLACE)";
         private static final String SQL_DROP_COMMAND_TABLE =

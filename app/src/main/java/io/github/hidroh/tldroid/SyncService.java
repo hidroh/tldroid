@@ -28,6 +28,7 @@ public class SyncService extends IntentService {
     private static final String ZIP_URL = "http://tldr-pages.github.io/assets/tldr.zip";
     public static final String EXTRA_ASSET_TYPE = TAG + ".EXTRA_ASSET_TYPE";
     public static final String PREF_LAST_REFRESHED = INDEX_URL;
+    public static final String PREF_LAST_ZIPPED = ZIP_URL;
     public static final String PREF_COMMAND_COUNT = "PREF_COMMAND_COUNT";
     public static final int ASSET_TYPE_INDEX = 0;
     public static final int ASSET_TYPE_ZIP = 1;

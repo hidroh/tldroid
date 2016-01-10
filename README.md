@@ -18,7 +18,7 @@
 **Dependencies**
 
 - [AOSP design support library](https://developer.android.com/tools/support-library/features.html#design)
-- [Square OkHttp](https://github.com/square/okhttp)
+- [Square Okio](https://github.com/square/okio)
 - [google-gson](https://github.com/google/gson) - JSON to Java object converter
 - [Txtmark](https://github.com/rjeschke/txtmark) - Java markdown processor
 - [tldr-pages](https://github.com/tldr-pages/tldr) - community-driven man pages

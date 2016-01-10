@@ -9,17 +9,15 @@ import android.os.RemoteException;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import okio.BufferedSink;
 import okio.Okio;
+import okio.Source;
 
 public class SyncService extends IntentService {
     private static final String TAG = SyncService.class.getSimpleName();
@@ -28,16 +26,9 @@ public class SyncService extends IntentService {
     public static final String EXTRA_ASSET_TYPE = TAG + ".EXTRA_ASSET_TYPE";
     public static final int ASSET_TYPE_INDEX = 0;
     public static final int ASSET_TYPE_ZIP = 1;
-    private OkHttpClient mClient;
 
     public SyncService() {
         super(TAG);
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        mClient = new OkHttpClient();
     }
 
     @Override
@@ -50,18 +41,13 @@ public class SyncService extends IntentService {
     }
 
     private void syncIndex() {
-        Response response;
-        try {
-            response = mClient.newCall(new Request.Builder()
-                    .url(HttpUrl.parse(INDEX_URL))
-                    .build())
-                    .execute();
-        } catch (IOException e) {
-            return;
-        }
         Commands commands;
         try {
-            commands =new GsonBuilder().create().fromJson(response.body().string(), Commands.class);
+            String response = Okio.buffer(Okio.source(new URL(INDEX_URL)
+                    .openConnection()
+                    .getInputStream()))
+                    .readUtf8();
+            commands = new GsonBuilder().create().fromJson(response, Commands.class);
         } catch (IOException | JsonSyntaxException e) {
             return;
         }
@@ -88,13 +74,12 @@ public class SyncService extends IntentService {
 
     private void syncZip() {
         try {
-            Response response = mClient.newCall(new Request.Builder()
-                    .url(HttpUrl.parse(ZIP_URL))
-                    .build())
-                    .execute();
+            Source response = Okio.source(new URL(ZIP_URL)
+                    .openConnection()
+                    .getInputStream());
             File file = new File(getCacheDir(), GetCommandTask.ZIP_FILENAME);
             BufferedSink sink = Okio.buffer(Okio.sink(file));
-            sink.writeAll(response.body().source());
+            sink.writeAll(response);
             sink.close();
         } catch (IOException e) {
             // no op

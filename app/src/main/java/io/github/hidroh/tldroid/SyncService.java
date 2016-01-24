@@ -55,7 +55,7 @@ public class SyncService extends IntentService {
             persist(new GsonBuilder()
                     .create()
                     .fromJson(Utils.readUtf8(connection.getInputStream()),
-                            Command[].class));
+                            Commands.class));
         } catch (IOException | JsonSyntaxException e) {
             Log.e(TAG, e.toString());
         } finally {
@@ -106,16 +106,16 @@ public class SyncService extends IntentService {
         return connection;
     }
 
-    private void persist(Command[] commands) {
-        if (commands == null || commands.length == 0) {
+    private void persist(Commands commands) {
+        if (commands.commands == null || commands.commands.length == 0) {
             return;
         }
         PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
-                .putInt(PREF_COMMAND_COUNT, commands.length)
+                .putInt(PREF_COMMAND_COUNT, commands.commands.length)
                 .commit();
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
-        for (Command command : commands) {
+        for (Command command : commands.commands) {
             for (String platform : command.platform) {
                 operations.add(ContentProviderOperation.newInsert(TldrProvider.URI_COMMAND)
                         .withValue(TldrProvider.CommandEntry.COLUMN_NAME, command.name)
@@ -130,6 +130,10 @@ public class SyncService extends IntentService {
         } catch (RemoteException | OperationApplicationException e) {
             // no op
         }
+    }
+
+    private static class Commands {
+        Command[] commands;
     }
 
     private static class Command {

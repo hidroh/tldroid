@@ -2,7 +2,7 @@
 [tldr](https://github.com/tldr-pages/tldr) Android client using [data binding](http://developer.android.com/tools/data-binding/guide.html), compatible with Android 2.1 and up.
 
 
-[![Get it on Google Play](https://developer.android.com/images/brand/en_generic_rgb_wo_45.png)](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" width="185px" />](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)
 
 ![](assets/tldroid.gif)
 

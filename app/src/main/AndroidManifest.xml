@@ -30,6 +30,10 @@
         <activity android:name=".CommandActivity">
         </activity>
 
+        <activity android:name=".RunActivity"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
+        </activity>
+
         <service android:name=".SyncService" android:exported="false" />
 
         <provider

@@ -13,7 +13,7 @@
 - Android SDK Build tools 23.0.2
 - Android SDK 23
 - Android Support Repository
-- Android Support Library 23.1.1
+- Android Support Library 23.2.1
 
 **Dependencies**
 

@@ -1,5 +1,5 @@
 ## tldroid
-[tldr](https://github.com/tldr-pages/tldr) Android client using [data binding](http://developer.android.com/tools/data-binding/guide.html), [Constraint Layout](http://tools.android.com/tech-docs/layout-editor), compatible with Android 2.3 and up.
+[tldr](https://github.com/tldr-pages/tldr) Android client written in [Kotlin](https://kotlinlang.org/), using [data binding](http://developer.android.com/tools/data-binding/guide.html), [Constraint Layout](http://tools.android.com/tech-docs/layout-editor), compatible with Android 2.3 and up.
 
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" width="185px" />](https://play.google.com/store/apps/details?id=io.github.hidroh.tldroid)

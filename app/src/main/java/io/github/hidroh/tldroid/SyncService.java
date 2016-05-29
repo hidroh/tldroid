@@ -101,7 +101,7 @@ public class SyncService extends IntentService {
         }
         sharedPrefs.edit()
                 .putLong(url, connection.getLastModified())
-                .commit();
+                .apply();
         return connection;
     }
 
@@ -112,7 +112,7 @@ public class SyncService extends IntentService {
         PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
                 .putInt(PREF_COMMAND_COUNT, commands.commands.length)
-                .commit();
+                .apply();
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         for (Command command : commands.commands) {
             for (String platform : command.platform) {

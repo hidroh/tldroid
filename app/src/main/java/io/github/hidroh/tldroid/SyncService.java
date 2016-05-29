@@ -10,8 +10,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.squareup.moshi.Moshi;
 
 import java.io.File;
 import java.io.IOException;
@@ -52,11 +51,11 @@ public class SyncService extends IntentService {
             return;
         }
         try {
-            persist(new GsonBuilder()
-                    .create()
-                    .fromJson(Utils.readUtf8(connection.getInputStream()),
-                            Commands.class));
-        } catch (IOException | JsonSyntaxException e) {
+            persist(new Moshi.Builder()
+                    .build()
+                    .adapter(Commands.class)
+                    .fromJson(Utils.readUtf8(connection.getInputStream())));
+        } catch (IOException e) {
             Log.e(TAG, e.toString());
         } finally {
             connection.disconnect();

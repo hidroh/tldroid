@@ -10,16 +10,15 @@
 **Requirements**
 - Latest Android SDK tools
 - Latest Android platform tools
-- Android SDK Build tools 23.0.2
+- Android SDK Build tools 23.0.3
 - Android SDK 23
 - Android Support Repository
-- Android Support Library 23.2.1
+- Android Support Library 23.4.0
 
 **Dependencies**
 
 - [AOSP design support library](https://developer.android.com/tools/support-library/features.html#design)
-- [Square Okio](https://github.com/square/okio)
-- [google-gson](https://github.com/google/gson) - JSON to Java object converter
+- Square [Okio](https://github.com/square/okio), [Moshi](https://github.com/square/moshi)
 - [Txtmark](https://github.com/rjeschke/txtmark) - Java markdown processor
 - [tldr-pages](https://github.com/tldr-pages/tldr) - community-driven man pages
 

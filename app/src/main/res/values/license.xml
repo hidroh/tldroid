@@ -15,6 +15,7 @@
             limitations under the License.</p>
 
             <h2>Libraries &amp; resources</h2>
+            <p><a href="https://github.com/square/moshi">Square Moshi</a><br />Apache License v2.0</p>
             <p><a href="https://github.com/square/okio">Square Okio</a><br />Apache License v2.0</p>
             <p><a href="http://developer.android.com/tools/support-library/index.html">Android support library</a><br />Apache License v2.0</p>
             <p><a href="https://github.com/tldr-pages/tldr">tldr-pages/tldr</a><br />MIT License</p>

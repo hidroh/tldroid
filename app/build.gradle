@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "io.github.hidroh.tldroid"
@@ -39,9 +39,8 @@ android {
 }
 
 dependencies {
-    //noinspection GradleDependency http://b.android.com/203321
-    compile 'com.android.support:design:23.2.1'
-    compile 'com.google.code.gson:gson:2.5'
-    compile 'com.github.rjeschke:txtmark:0.13'
-    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.android.support:design:23.4.0',
+            'com.github.rjeschke:txtmark:0.13',
+            'com.squareup.moshi:moshi:1.2.0',
+            'com.squareup.okio:okio:1.8.0'
 }

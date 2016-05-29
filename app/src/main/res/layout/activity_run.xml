@@ -5,12 +5,13 @@
 
     <data />
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/warning"
             android:text="@string/run_warning"
             android:textColor="?android:attr/textColorSecondary"
             app:monospace="@{true}"
@@ -18,45 +19,54 @@
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
+            app:layout_constraintRight_toRightOf="@id/constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
+        <TextView
+            android:id="@+id/prompt"
+            android:text="> "
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="?android:attr/textColorHint"
+            app:monospace="@{true}"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
             android:layout_height="?attr/listPreferredItemHeightSmall"
-            android:gravity="center_vertical">
+            app:layout_constraintTop_toBottomOf="@id/warning"
+            app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            tools:ignore="HardcodedText" />
 
-            <TextView
-                android:id="@+id/prompt"
-                android:text="> "
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="?android:attr/textColorHint"
-                app:monospace="@{true}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                tools:ignore="HardcodedText" />
-
-            <EditText
-                android:id="@+id/edit_text"
-                tools:hint="ls"
-                android:textSize="@dimen/text_size_medium"
-                app:monospace="@{true}"
-                android:inputType="textNoSuggestions"
-                android:imeOptions="actionGo"
-                android:background="@null"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        <EditText
+            android:id="@id/edit_text"
+            tools:hint="ls"
+            android:textSize="@dimen/text_size_medium"
+            app:monospace="@{true}"
+            android:inputType="textNoSuggestions"
+            android:imeOptions="actionGo"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            app:layout_constraintTop_toTopOf="@id/prompt"
+            app:layout_constraintLeft_toRightOf="@id/prompt"
+            app:layout_constraintRight_toRightOf="@id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="@id/prompt"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/prompt"
+            app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
+            app:layout_constraintRight_toRightOf="@id/constraintLayout"
+            app:layout_constraintBottom_toBottomOf="@id/constraintLayout"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="@dimen/activity_vertical_margin"
@@ -87,6 +97,6 @@
 
         </ScrollView>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </layout>

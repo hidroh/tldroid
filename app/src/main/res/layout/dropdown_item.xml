@@ -28,12 +28,12 @@
             style="?android:attr/dropDownItemStyle"
             android:textAppearance="?attr/textAppearanceLargePopupMenu"
             android:textSize="@dimen/text_size_medium"
-            android:singleLine="true"
             android:ellipsize="end"
             app:monospace="@{true}"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
         <TextView
             android:id="@android:id/text2"
@@ -42,10 +42,10 @@
             style="?android:attr/dropDownItemStyle"
             android:textAppearance="?attr/textAppearanceSmallPopupMenu"
             android:textColor="?android:attr/textColorSecondary"
-            android:singleLine="true"
             app:monospace="@{true}"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
     </LinearLayout>
 

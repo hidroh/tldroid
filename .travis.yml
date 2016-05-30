@@ -30,5 +30,5 @@ cache:
     - $HOME/.gradle/wrapper/
 script: "./gradlew $TASK"
 env:
-    - TASK="assembleDebug"
     - TASK="lintDebug"
+    - TASK="testDebug"

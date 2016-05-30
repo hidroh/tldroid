@@ -28,4 +28,7 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
-script: "./gradlew assembleDebug && ./gradlew lintDebug"
+script: "./gradlew $TASK"
+env:
+    - TASK="assembleDebug"
+    - TASK="lintDebug"

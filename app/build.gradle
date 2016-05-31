@@ -81,7 +81,8 @@ dependencies {
             'com.android.support.test:runner:0.5',
             'com.android.support.test:rules:0.5',
             'com.android.support.test.espresso:espresso-core:2.2.2',
-            'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
+            'com.android.support.test.espresso:espresso-idling-resource:2.2.2',
+            'com.android.support.test.espresso:espresso-intents:2.2.2'
 }
 
 kapt {

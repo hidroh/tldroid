@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 23
@@ -11,9 +12,13 @@ android {
         targetSdkVersion 23
         versionCode 7
         versionName "1.3"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         minified.initWith(debug)
         minified {
             minifyEnabled true
@@ -25,10 +30,25 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
     }
 
     dataBinding {
         enabled = true
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            testLogging {
+                events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+                exceptionFormat 'full'
+            }
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
     }
 
     lintOptions {
@@ -52,8 +72,36 @@ dependencies {
             'com.squareup.moshi:moshi:1.2.0',
             'com.squareup.okio:okio:1.8.0'
     kapt "com.android.databinding:compiler:$androidToolsVersion"
+    testCompile 'junit:junit:4.12',
+            'org.mockito:mockito-core:1.10.19',
+            'org.powermock:powermock-module-junit4:1.6.2',
+            'org.powermock:powermock-api-mockito:1.6.2',
+            'org.assertj:assertj-core:1.7.1' // test against android.jar which uses JDK6
+    androidTestCompile 'com.android.support:support-annotations:23.4.0',
+            'com.android.support.test:runner:0.5',
+            'com.android.support.test:rules:0.5',
+            'com.android.support.test.espresso:espresso-core:2.2.2',
+            'com.android.support.test.espresso:espresso-idling-resource:2.2.2'
 }
 
 kapt {
     generateStubs = true
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest', 'testDebugUnitTest']) {
+    sourceDirectories = files android.sourceSets.main.java.srcDirs
+    classDirectories = fileTree(
+            dir: "${buildDir}/intermediates/classes/debug",
+            exclude: ['**/R.class', '**/R$*.class']
+    )
+    executionData = fileTree(
+            dir: "${buildDir}",
+            include: ['**/*.exec', '**/*.ec']
+    )
+    reports {
+        html.destination "${buildDir}/reports/jacoco/html"
+    }
+    doLast {
+        println "jacoco report generated to file://${reports.html.destination}/index.html"
+    }
 }

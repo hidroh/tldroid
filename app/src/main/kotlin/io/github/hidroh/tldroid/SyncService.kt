@@ -53,7 +53,7 @@ class SyncService : IntentService(SyncService.TAG) {
   private fun syncZip() {
     val connection = connect(ZIP_URL) ?: return
     try {
-      val sink = Okio.buffer(Okio.sink(File(cacheDir, GetCommandTask.ZIP_FILENAME)))
+      val sink = Okio.buffer(Okio.sink(File(cacheDir, MarkdownProcessor.ZIP_FILENAME)))
       sink.writeAll(Okio.source(connection.inputStream))
       sink.close()
     } catch (e: IOException) {

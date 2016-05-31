@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     binding.setVariable(io.github.hidroh.tldroid.BR.content,
         getString(R.string.info_html, lastRefreshedText, totalCommands) +
             getString(R.string.about_html))
+    binding.root.id = R.id.web_view
     AlertDialog.Builder(this).setView(binding.root).create().show()
   }
 

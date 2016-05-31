@@ -14,8 +14,11 @@ class TldrProvider : ContentProvider() {
 
   companion object {
     const internal val AUTHORITY = "io.github.hidroh.tldroid.provider"
-    private val BASE_URI = Uri.parse("content://" + AUTHORITY)
-    internal val URI_COMMAND = BASE_URI.buildUpon().appendPath(CommandEntry.TABLE_NAME).build()
+    internal val URI_COMMAND = Uri
+        .parse("content://" + AUTHORITY)
+        .buildUpon()
+        .appendPath(CommandEntry.TABLE_NAME)
+        .build()
   }
 
   interface CommandEntry : BaseColumns {
@@ -71,16 +74,16 @@ class TldrProvider : ContentProvider() {
 
   class DbHelper : SQLiteOpenHelper {
     companion object {
-      private val DB_NAME = "tldr.db"
-      private val DB_VERSION = 2
-      private val SQL_CREATE_COMMAND_TABLE = "CREATE TABLE ${CommandEntry.TABLE_NAME} (" +
+      private const val DB_NAME = "tldr.db"
+      private const val DB_VERSION = 2
+      private const val SQL_CREATE_COMMAND_TABLE = "CREATE TABLE ${CommandEntry.TABLE_NAME} (" +
           "${BaseColumns._ID} INTEGER PRIMARY KEY," +
           "${CommandEntry.COLUMN_NAME} TEXT," +
           "${CommandEntry.COLUMN_PLATFORM} TEXT," +
           "${CommandEntry.COLUMN_TEXT} TEXT," +
           "${CommandEntry.COLUMN_MODIFIED} INTEGER DEFAULT -1," +
           "UNIQUE (${CommandEntry.COLUMN_NAME}, ${CommandEntry.COLUMN_PLATFORM}) ON CONFLICT REPLACE)"
-      private val SQL_DROP_COMMAND_TABLE = "DROP TABLE IF EXISTS ${CommandEntry.TABLE_NAME}"
+      private const val SQL_DROP_COMMAND_TABLE = "DROP TABLE IF EXISTS ${CommandEntry.TABLE_NAME}"
     }
 
     constructor(context: Context) : super(context, TldrProvider.DbHelper.DB_NAME,

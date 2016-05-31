@@ -6,13 +6,10 @@ import android.content.Intent
 import android.content.OperationApplicationException
 import android.os.RemoteException
 import android.preference.PreferenceManager
-import android.util.Log
 import com.squareup.moshi.Moshi
 import okio.Okio
 import java.io.File
-import java.io.IOException
 import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
 
 class SyncService : IntentService(SyncService.TAG) {
@@ -38,54 +35,38 @@ class SyncService : IntentService(SyncService.TAG) {
 
   private fun syncIndex() {
     val connection = connect(INDEX_URL) ?: return
-    try {
+    val inputStream = connection.getInputStream()
+    if (inputStream != null) {
       persist(Moshi.Builder()
           .build()
           .adapter(Commands::class.java)
-          .fromJson(Utils.readUtf8(connection.inputStream)))
-    } catch (e: IOException) {
-      Log.e(TAG, e.toString())
-    } finally {
-      connection.disconnect()
+          .fromJson(Utils.readUtf8(inputStream)))
+      inputStream.close()
     }
+    connection.disconnect()
   }
 
   private fun syncZip() {
     val connection = connect(ZIP_URL) ?: return
-    try {
+    val inputStream = connection.getInputStream()
+    if (inputStream != null) {
       val sink = Okio.buffer(Okio.sink(File(cacheDir, MarkdownProcessor.ZIP_FILENAME)))
-      sink.writeAll(Okio.source(connection.inputStream))
+      sink.writeAll(Okio.source(inputStream))
       sink.close()
-    } catch (e: IOException) {
-      Log.e(TAG, e.toString())
-    } finally {
-      connection.disconnect()
     }
+    connection.disconnect()
   }
 
-  private fun connect(url: String): HttpURLConnection? {
-    val connection: HttpURLConnection
-    try {
-      connection = URL(url).openConnection() as HttpURLConnection
-    } catch (e: IOException) {
-      Log.e(TAG, e.toString())
-      return null
-    }
-
+  private fun connect(url: String): NetworkConnection? {
     val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-    connection.ifModifiedSince = sharedPrefs.getLong(url, 0L)
-    try {
-      connection.connect()
-      if (connection.responseCode == HttpURLConnection.HTTP_NOT_MODIFIED) {
-        connection.disconnect()
-        return null
-      }
-    } catch (e: IOException) {
-      Log.e(TAG, e.toString())
+    val connection = NetworkConnection(url)
+    connection.setIfModifiedSince(sharedPrefs.getLong(url, 0L))
+    connection.connect()
+    if (connection.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+      connection.disconnect()
       return null
     }
-
-    sharedPrefs.edit().putLong(url, connection.lastModified).apply()
+    sharedPrefs.edit().putLong(url, connection.getLastModified()).apply()
     return connection
   }
 

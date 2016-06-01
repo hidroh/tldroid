@@ -18,7 +18,7 @@ internal class GetCommandTask(commandActivity: CommandActivity, platform: String
     return processor.process(context, commandName, lastModified)
   }
 
-  override fun onPostExecute(s: String) {
+  override fun onPostExecute(s: String?) {
     if (commandActivity.get() != null) {
       commandActivity.get().render(s)
     }

@@ -14,7 +14,7 @@ class TldrProvider : ContentProvider() {
 
   companion object {
     const internal val AUTHORITY = "io.github.hidroh.tldroid.provider"
-    internal val URI_COMMAND = Uri
+    val URI_COMMAND = Uri
         .parse("content://" + AUTHORITY)
         .buildUpon()
         .appendPath(CommandEntry.TABLE_NAME)

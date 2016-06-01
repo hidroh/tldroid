@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
   @Rule @JvmField
-  var intentsRule = CustomTestRule(MainActivity::class.java)
+  val intentsRule = CustomTestRule(MainActivity::class.java)
 
   @Test
   fun testInfo() {

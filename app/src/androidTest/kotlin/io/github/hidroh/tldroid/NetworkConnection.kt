@@ -4,9 +4,17 @@ import java.io.IOException
 import java.io.InputStream
 
 class NetworkConnection(url: String) {
-  private var responseCode: Int = 0
-  private var lastModified: Long = 0L
-  private var response: InputStream? = null
+  companion object {
+    private var responseCode: Int = 0
+    private var lastModified: Long = 0L
+    private var response: InputStream? = null
+
+    fun mockResponse(responseCode: Int, lastModified: Long, response: InputStream?) {
+      NetworkConnection.responseCode = responseCode
+      NetworkConnection.lastModified = lastModified
+      NetworkConnection.response = response
+    }
+  }
 
   fun connect() {
   }
@@ -28,11 +36,5 @@ class NetworkConnection(url: String) {
 
   fun getLastModified(): Long {
     return lastModified
-  }
-
-  fun mockResponse(responseCode: Int, lastModified: Long, response: InputStream) {
-    this.responseCode = responseCode
-    this.lastModified = lastModified
-    this.response = response
   }
 }

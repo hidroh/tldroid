@@ -77,7 +77,8 @@ dependencies {
             'org.powermock:powermock-module-junit4:1.6.2',
             'org.powermock:powermock-api-mockito:1.6.2',
             'org.assertj:assertj-core:1.7.1' // test against android.jar which uses JDK6
-    androidTestCompile 'com.android.support:support-annotations:23.4.0',
+    androidTestCompile 'org.assertj:assertj-core:2.4.1',
+            'com.android.support:support-annotations:23.4.0',
             'com.android.support.test:runner:0.5',
             'com.android.support.test:rules:0.5',
             'com.android.support.test.espresso:espresso-core:2.2.2',

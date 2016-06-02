@@ -12,7 +12,7 @@ import java.io.IOException
 import java.util.*
 import java.util.zip.ZipFile
 
-internal class MarkdownProcessor(private val platform: String) {
+class MarkdownProcessor(private val platform: String) {
 
   companion object {
     const val ZIP_FILENAME = "tldr.zip"

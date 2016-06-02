@@ -2,13 +2,16 @@ package io.github.hidroh.tldroid
 
 import android.app.IntentService
 import android.content.ContentProviderOperation
+import android.content.Context
 import android.content.Intent
 import android.content.OperationApplicationException
 import android.os.RemoteException
 import android.preference.PreferenceManager
+import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.Moshi
 import okio.Okio
 import java.io.File
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -27,83 +30,94 @@ class SyncService : IntentService(SyncService.TAG) {
 
   override fun onHandleIntent(intent: Intent) {
     if (intent.getIntExtra(EXTRA_ASSET_TYPE, ASSET_TYPE_INDEX) == ASSET_TYPE_INDEX) {
-      syncIndex()
+      NetworkSync(this).syncIndex()
     } else {
-      syncZip()
+      NetworkSync(this).syncZip()
     }
   }
 
-  private fun syncIndex() {
-    val connection = connect(INDEX_URL) ?: return
-    val inputStream = connection.getInputStream()
-    if (inputStream != null) {
-      persist(Moshi.Builder()
-          .build()
-          .adapter(Commands::class.java)
-          .fromJson(Utils.readUtf8(inputStream)))
-      inputStream.close()
-    }
-    connection.disconnect()
-  }
+  class NetworkSync(val context: Context) {
 
-  private fun syncZip() {
-    val connection = connect(ZIP_URL) ?: return
-    val inputStream = connection.getInputStream()
-    if (inputStream != null) {
-      val sink = Okio.buffer(Okio.sink(File(cacheDir, MarkdownProcessor.ZIP_FILENAME)))
-      sink.writeAll(Okio.source(inputStream))
-      sink.close()
-    }
-    connection.disconnect()
-  }
-
-  private fun connect(url: String): NetworkConnection? {
-    val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
-    val connection = NetworkConnection(url)
-    connection.setIfModifiedSince(sharedPrefs.getLong(url, 0L))
-    connection.connect()
-    if (connection.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-      connection.disconnect()
-      return null
-    }
-    sharedPrefs.edit().putLong(url, connection.getLastModified()).apply()
-    return connection
-  }
-
-  private fun persist(commands: Commands) {
-    if (commands.commands == null || commands.commands!!.size == 0) {
-      return
-    }
-    PreferenceManager.getDefaultSharedPreferences(this)
-        .edit()
-        .putInt(PREF_COMMAND_COUNT, commands.commands!!.size)
-        .apply()
-    val operations = ArrayList<ContentProviderOperation>()
-    for (command in commands.commands!!) {
-      for (platform in command.platform!!) {
-        operations.add(ContentProviderOperation.newInsert(TldrProvider.URI_COMMAND)
-            .withValue(TldrProvider.CommandEntry.COLUMN_NAME, command.name)
-            .withValue(TldrProvider.CommandEntry.COLUMN_PLATFORM, platform)
-            .build())
+    fun syncIndex() {
+      val connection = connect(INDEX_URL) ?: return
+      val inputStream = connection.getInputStream()
+      if (inputStream != null) {
+        val commands = try {
+          Moshi.Builder()
+              .build()
+              .adapter(Commands::class.java)
+              .fromJson(Utils.readUtf8(inputStream))
+        } catch (e: IOException) {
+          null
+        } catch (e: JsonDataException) {
+          null
+        }
+        persist(commands)
+        inputStream.close()
       }
-    }
-    val cr = contentResolver
-    try {
-      cr.applyBatch(TldrProvider.AUTHORITY, operations)
-      cr.notifyChange(TldrProvider.URI_COMMAND, null)
-    } catch (e: RemoteException) {
-      // no op
-    } catch (e: OperationApplicationException) {
+      connection.disconnect()
     }
 
-  }
+    fun syncZip() {
+      val connection = connect(ZIP_URL) ?: return
+      val inputStream = connection.getInputStream()
+      if (inputStream != null) {
+        val sink = Okio.buffer(Okio.sink(File(context.cacheDir, MarkdownProcessor.ZIP_FILENAME)))
+        sink.writeAll(Okio.source(inputStream))
+        sink.close()
+        inputStream.close()
+      }
+      connection.disconnect()
+    }
 
-  private class Commands {
-    internal var commands: Array<Command>? = null
-  }
+    private fun connect(url: String): NetworkConnection? {
+      val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+      val connection = NetworkConnection(url)
+      connection.setIfModifiedSince(sharedPrefs.getLong(url, 0L))
+      connection.connect()
+      if (connection.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+        connection.disconnect()
+        return null
+      }
+      sharedPrefs.edit().putLong(url, connection.getLastModified()).apply()
+      return connection
+    }
 
-  private class Command {
-    internal var name: String? = null
-    internal var platform: Array<String>? = null
+    private fun persist(commands: Commands?) {
+      if (commands == null || commands.commands == null || commands.commands!!.size == 0) {
+        return
+      }
+      PreferenceManager.getDefaultSharedPreferences(context)
+          .edit()
+          .putInt(PREF_COMMAND_COUNT, commands.commands!!.size)
+          .apply()
+      val operations = ArrayList<ContentProviderOperation>()
+      for (command in commands.commands!!) {
+        for (platform in command.platform!!) {
+          operations.add(ContentProviderOperation.newInsert(TldrProvider.URI_COMMAND)
+              .withValue(TldrProvider.CommandEntry.COLUMN_NAME, command.name)
+              .withValue(TldrProvider.CommandEntry.COLUMN_PLATFORM, platform)
+              .build())
+        }
+      }
+      val cr = context.contentResolver
+      try {
+        cr.applyBatch(TldrProvider.AUTHORITY, operations)
+        cr.notifyChange(TldrProvider.URI_COMMAND, null)
+      } catch (e: RemoteException) {
+        // no op
+      } catch (e: OperationApplicationException) {
+      }
+
+    }
+
+    private class Commands {
+      internal var commands: Array<Command>? = null
+    }
+
+    private class Command {
+      internal var name: String? = null
+      internal var platform: Array<String>? = null
+    }
   }
 }

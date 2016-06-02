@@ -4,7 +4,7 @@ import android.os.AsyncTask
 import android.preference.PreferenceManager
 import java.lang.ref.WeakReference
 
-internal class GetCommandTask(commandActivity: CommandActivity, platform: String) :
+internal class GetCommandTask(commandActivity: CommandActivity, platform: String?) :
     AsyncTask<String, Void, String>() {
 
   private val commandActivity: WeakReference<CommandActivity> = WeakReference(commandActivity)

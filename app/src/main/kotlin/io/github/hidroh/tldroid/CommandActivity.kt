@@ -55,8 +55,8 @@ class CommandActivity : AppCompatActivity() {
     if (savedInstanceState != null) {
       mContent = savedInstanceState.getString(STATE_CONTENT)
     }
-    if (mContent == null && !TextUtils.isEmpty(mPlatform)) {
-      GetCommandTask(this, mPlatform!!).execute(mQuery)
+    if (mContent == null) {
+      GetCommandTask(this, mPlatform).execute(mQuery)
     } else {
       render(mContent)
     }

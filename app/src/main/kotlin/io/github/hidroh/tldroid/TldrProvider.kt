@@ -13,7 +13,7 @@ import android.provider.BaseColumns
 class TldrProvider : ContentProvider() {
 
   companion object {
-    const internal val AUTHORITY = "io.github.hidroh.tldroid.provider"
+    const val AUTHORITY = "io.github.hidroh.tldroid.provider"
     val URI_COMMAND = Uri
         .parse("content://" + AUTHORITY)
         .buildUpon()

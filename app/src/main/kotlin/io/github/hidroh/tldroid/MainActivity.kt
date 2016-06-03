@@ -1,6 +1,7 @@
 package io.github.hidroh.tldroid
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.databinding.DataBindingUtil
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     DataBindingUtil.setContentView<ViewDataBinding>(this, R.layout.activity_main)
     findViewById(R.id.info_button)!!.setOnClickListener { showInfo() }
+    findViewById(R.id.list_button)!!.setOnClickListener { showList() }
     mEditText = findViewById(R.id.edit_text) as AutoCompleteTextView?
     mEditText!!.setOnEditorActionListener { v, actionId, event ->
       actionId == EditorInfo.IME_ACTION_SEARCH && search(v.text.toString(), null) }
@@ -37,8 +39,6 @@ class MainActivity : AppCompatActivity() {
       parent, view, position, id ->
       val text = (view.findViewById(android.R.id.text1) as TextView).text
       val platform = (view.findViewById(android.R.id.text2) as TextView).text
-      mEditText!!.setText(text.toString())
-      mEditText!!.setSelection(text.length)
       search(text.toString(), platform)
     }
   }
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     if (TextUtils.isEmpty(query)) {
       return false
     }
+    mEditText!!.setText(query)
+    mEditText!!.setSelection(query.length)
     startActivity(Intent(this, CommandActivity::class.java)
         .putExtra(CommandActivity.EXTRA_QUERY, query)
         .putExtra(CommandActivity.EXTRA_PLATFORM, platform))
@@ -70,6 +72,20 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.about_html))
     binding.root.id = R.id.web_view
     AlertDialog.Builder(this).setView(binding.root).create().show()
+  }
+
+  private fun showList() {
+    val adapter = CursorAdapter(this)
+    adapter.filter.filter("")
+    AlertDialog.Builder(this)
+        .setTitle(R.string.all_commands)
+        .setAdapter(adapter, DialogInterface.OnClickListener { dialog, which ->
+          val cursor = adapter.getItem(which) as Cursor? ?: return@OnClickListener
+          search(cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_NAME)),
+              cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_PLATFORM)))
+        })
+        .create()
+        .show()
   }
 
   private class CursorAdapter(context: Context) :

@@ -94,7 +94,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest', 't
     sourceDirectories = files android.sourceSets.main.java.srcDirs
     classDirectories = fileTree(
             dir: "${buildDir}/intermediates/classes/debug",
-            exclude: ['**/R.class', '**/R$*.class']
+            exclude: ['**/R.class', '**/R$*.class', '**/databinding/**']
     )
     executionData = fileTree(
             dir: "${buildDir}",

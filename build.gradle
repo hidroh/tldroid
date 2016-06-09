@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        androidToolsVersion = "2.2.0-alpha2"
+        androidToolsVersion = "2.2.0-alpha3"
         kotlinVersion = "1.0.2"
     }
     repositories {

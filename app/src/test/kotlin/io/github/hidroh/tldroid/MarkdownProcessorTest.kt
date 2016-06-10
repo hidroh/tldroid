@@ -88,9 +88,9 @@ class MarkdownProcessorTest {
   }
 
   private fun createZip(platform: String, command: String, content: String) {
-    val entry = MarkdownProcessor.COMMAND_PATH.format(platform, command)
+    val entry = Constants.COMMAND_PATH.format(platform, command)
     val outStream = ZipOutputStream(FileOutputStream(File(context!!.cacheDir,
-        MarkdownProcessor.ZIP_FILENAME)))
+        Constants.ZIP_FILENAME)))
     outStream.putNextEntry(ZipEntry(entry))
     outStream.write(content.toByteArray())
     outStream.closeEntry()
@@ -99,6 +99,6 @@ class MarkdownProcessorTest {
 
   @After
   fun tearDown() {
-    File(context!!.cacheDir, MarkdownProcessor.ZIP_FILENAME).delete()
+    File(context!!.cacheDir, Constants.ZIP_FILENAME).delete()
   }
 }

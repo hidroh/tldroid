@@ -62,7 +62,7 @@ class SyncService : IntentService(SyncService.TAG) {
       val connection = connect(ZIP_URL) ?: return
       val inputStream = connection.getInputStream()
       if (inputStream != null) {
-        val sink = Okio.buffer(Okio.sink(File(context.cacheDir, MarkdownProcessor.ZIP_FILENAME)))
+        val sink = Okio.buffer(Okio.sink(File(context.cacheDir, Constants.ZIP_FILENAME)))
         sink.writeAll(Okio.source(inputStream))
         sink.close()
         inputStream.close()

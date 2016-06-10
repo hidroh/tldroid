@@ -32,7 +32,6 @@ class MainActivityTest {
   fun testInfo() {
     onView(isRoot()).perform(closeSoftKeyboard())
     onView(withId(R.id.info_button)).perform(click())
-    onView(withId(R.id.info_button)).perform(click()) // TODO
     onView(withId(R.id.web_view))
         .inRoot(isDialog())
         .check(matches(isDisplayed()))

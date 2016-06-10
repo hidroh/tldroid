@@ -16,7 +16,11 @@ import android.support.test.espresso.matcher.CursorMatchers
 import android.support.test.espresso.matcher.RootMatchers.isDialog
 import android.support.test.espresso.matcher.RootMatchers.withDecorView
 import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.web.assertion.WebViewAssertions.webContent
+import android.support.test.espresso.web.matcher.DomMatchers.containingTextInBody
+import android.support.test.espresso.web.sugar.Web.onWebView
 import android.support.test.runner.AndroidJUnit4
+import io.github.hidroh.tldroid.test.EspressoHelper.waitForAtMost
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.junit.Rule
@@ -32,9 +36,12 @@ class MainActivityTest {
   fun testInfo() {
     onView(isRoot()).perform(closeSoftKeyboard())
     onView(withId(R.id.info_button)).perform(click())
-    onView(withId(R.id.web_view))
+    onView(isRoot())
         .inRoot(isDialog())
-        .check(matches(isDisplayed()))
+        .perform(waitForAtMost(1000, withId(R.id.web_view)))
+    onWebView(withId(R.id.web_view))
+        .forceJavascriptEnabled()
+        .check(webContent(containingTextInBody("License")))
     onView(isRoot()).perform(pressBack())
     onView(withId(R.id.web_view))
         .check(doesNotExist())

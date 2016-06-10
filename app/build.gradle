@@ -73,7 +73,7 @@ android {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
             'com.android.support:design:23.4.0',
-            'com.android.support.constraint:constraint-layout:1.0.0-alpha2',
+            'com.android.support.constraint:constraint-layout:1.0.0-alpha1',
             'com.github.rjeschke:txtmark:0.13',
             'com.squareup.moshi:moshi:1.2.0',
             'com.squareup.okio:okio:1.8.0'

@@ -13,11 +13,6 @@ import java.util.zip.ZipFile
 
 class MarkdownProcessor(private val platform: String?) {
 
-  companion object {
-    const val ZIP_FILENAME = "tldr.zip"
-    const val COMMAND_PATH = "pages/%s/%2s.md"
-  }
-
   @WorkerThread
   fun process(context: Context, commandName: String, lastModified: Long): String? {
     val selection = "${TldrProvider.CommandEntry.COLUMN_NAME}=? AND " +
@@ -39,9 +34,9 @@ class MarkdownProcessor(private val platform: String?) {
     platform ?: return null
     val markdown: String
     try {
-      val zip = ZipFile(File(context.cacheDir, ZIP_FILENAME), ZipFile.OPEN_READ)
+      val zip = ZipFile(File(context.cacheDir, Constants.ZIP_FILENAME), ZipFile.OPEN_READ)
       markdown = Utils.readUtf8(zip.getInputStream(zip.getEntry(
-          COMMAND_PATH.format(platform, name))))
+          Constants.COMMAND_PATH.format(platform, name))))
       zip.close()
     } catch (e: IOException) {
       return null

@@ -4,7 +4,9 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.ActionBar
@@ -18,6 +20,7 @@ import android.view.MenuItem
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import java.lang.ref.WeakReference
 
 class CommandActivity : AppCompatActivity() {
   companion object {
@@ -107,5 +110,26 @@ class CommandActivity : AppCompatActivity() {
     // just display a generic message if empty for now
     mBinding!!.setVariable(io.github.hidroh.tldroid.BR.content,
         if (TextUtils.isEmpty(mContent)) getString(R.string.empty_html) else html)
+  }
+
+  internal class GetCommandTask(commandActivity: CommandActivity, platform: String?) :
+      AsyncTask<String, Void, String>() {
+
+    private val commandActivity: WeakReference<CommandActivity> = WeakReference(commandActivity)
+    private val processor: MarkdownProcessor = MarkdownProcessor(platform)
+
+    override fun doInBackground(vararg params: String): String? {
+      val context = commandActivity.get() ?: return null
+      val commandName = params[0]
+      val lastModified = PreferenceManager.getDefaultSharedPreferences(context)
+          .getLong(SyncService.PREF_LAST_ZIPPED, 0L)
+      return processor.process(context, commandName, lastModified)
+    }
+
+    override fun onPostExecute(s: String?) {
+      if (commandActivity.get() != null) {
+        commandActivity.get().render(s)
+      }
+    }
   }
 }

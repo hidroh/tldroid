@@ -32,12 +32,8 @@ class RunActivity : AppCompatActivity() {
     val command = intent.getStringExtra(EXTRA_COMMAND)
     (findViewById(R.id.prompt) as TextView).append(command)
     (findViewById(R.id.edit_text) as EditText).setOnEditorActionListener { v, actionId, event ->
-      if (actionId == EditorInfo.IME_ACTION_GO) {
-        execute(command, v.text.toString().trim())
-        true
-      } else {
-        false
-      }
+      execute(command, v.text.toString().trim())
+      true
     }
     if (savedInstanceState != null) {
       display(Pair.create(savedInstanceState.getString(STATE_OUTPUT),
@@ -55,7 +51,7 @@ class RunActivity : AppCompatActivity() {
     if (TextUtils.isEmpty(arguments)) {
       RunTask(this).execute(command)
     } else {
-      RunTask(this).execute(*TextUtils.split(command + " " + arguments, "\\s+"))
+      RunTask(this).execute(*TextUtils.split("$command $arguments", "\\s+"))
     }
   }
 
@@ -71,7 +67,7 @@ class RunActivity : AppCompatActivity() {
     }
   }
 
-  private class RunTask(runActivity: RunActivity) :
+  internal class RunTask(runActivity: RunActivity) :
       AsyncTask<String, Void, Pair<String, String>>() {
     private val mRunActivity: WeakReference<RunActivity>
 

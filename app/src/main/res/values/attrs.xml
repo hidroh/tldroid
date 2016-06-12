@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="colorDefinition" format="reference|color" />
+    <attr name="colorLiteral" format="reference|color" />
+    <attr name="themedBackground" format="reference|color" />
+</resources>

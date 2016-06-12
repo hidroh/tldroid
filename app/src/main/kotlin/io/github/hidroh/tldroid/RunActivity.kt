@@ -5,16 +5,14 @@ import android.databinding.ViewDataBinding
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.util.Pair
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import java.io.IOException
 import java.lang.ref.WeakReference
 
-class RunActivity : AppCompatActivity() {
+class RunActivity : ThemedActivity() {
   companion object {
     val EXTRA_COMMAND = RunActivity::class.java.name + ".EXTRA_COMMAND"
     private val STATE_ERROR = "state:error"

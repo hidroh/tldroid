@@ -22,7 +22,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import java.lang.ref.WeakReference
 
-class CommandActivity : AppCompatActivity() {
+class CommandActivity : ThemedActivity() {
   companion object {
     val EXTRA_QUERY = CommandActivity::class.java.name + ".EXTRA_QUERY"
     val EXTRA_PLATFORM = CommandActivity::class.java.name + ".EXTRA_PLATFORM"

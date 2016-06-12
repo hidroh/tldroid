@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_solarized"
+        android:title="@string/solarized" />
+
+    <item
+        android:id="@+id/menu_afterglow"
+        android:title="@string/afterglow" />
+
+    <item
+        android:id="@+id/menu_tomorrow"
+        android:title="@string/tomorrow" />
+
+</menu>

@@ -17,7 +17,8 @@
                     }
                     a {color: #%3$s;}
                     pre {white-space: pre-wrap;}
-                    code {color: #%3$s;}
+                    code {color: #%6$s; font-weight: bold;}
+                    .literal {color: #%7$s; font-weight: normal;}
                 </style>
             </head>
             <body>%1$s</body>
@@ -43,4 +44,8 @@
     <string name="run">Run</string>
     <string name="run_warning">* Not all commands are available on Android. Run at your own risk.</string>
     <string name="all_commands">All commands</string>
+    <string name="settings">Settings</string>
+    <string name="solarized">Solarized</string>
+    <string name="afterglow">Afterglow</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>

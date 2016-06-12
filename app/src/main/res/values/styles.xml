@@ -14,11 +14,12 @@
         <item name="android:textColorLink">?attr/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">?colorPrimary</item>
-        <item name="alertDialogTheme">@style/AppAlertDialog</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
     </style>
 
-    <style name="AppAlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="AppBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
         <item name="colorPrimary">@color/solarizedBase02</item>
+        <item name="android:colorBackground">?attr/colorPrimary</item>
         <item name="colorAccent">@color/solarizedOrange</item>
         <item name="android:textColorPrimary">@color/solarizedBase2</item>
         <item name="android:textColorSecondary">@color/solarizedBase1</item>

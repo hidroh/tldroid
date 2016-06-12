@@ -10,9 +10,10 @@ import android.preference.PreferenceManager
 import android.provider.BaseColumns
 import android.support.design.widget.BottomSheetDialog
 import android.support.v4.widget.ResourceCursorAdapter
-import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
 import android.text.TextUtils
 import android.text.format.DateUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,17 +21,23 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ThemedActivity() {
   private var mEditText: AutoCompleteTextView? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    setContentView()
+  }
+
+  private fun setContentView() {
     DataBindingUtil.setContentView<ViewDataBinding>(this, R.layout.activity_main)
     findViewById(R.id.info_button)!!.setOnClickListener { showInfo() }
     findViewById(R.id.list_button)!!.setOnClickListener { showList() }
+    findViewById(R.id.settings_button)!!.setOnClickListener { showThemeOptions() }
     mEditText = findViewById(R.id.edit_text) as AutoCompleteTextView?
     mEditText!!.setOnEditorActionListener { v, actionId, event ->
-      actionId == EditorInfo.IME_ACTION_SEARCH && search(v.text.toString(), null) }
+      actionId == EditorInfo.IME_ACTION_SEARCH && search(v.text.toString(), null)
+    }
     mEditText!!.setAdapter(CursorAdapter(this))
     mEditText!!.onItemClickListener = AdapterView.OnItemClickListener {
       parent, view, position, id ->
@@ -90,6 +97,21 @@ class MainActivity : AppCompatActivity() {
     }
     dialog.setContentView(view)
     dialog.show()
+  }
+
+  private fun showThemeOptions() {
+    val popupMenu = PopupMenu(this, findViewById(R.id.settings_button), Gravity.NO_GRAVITY)
+    popupMenu.inflate(R.menu.menu_theme)
+    popupMenu.setOnMenuItemClickListener { item ->
+      Utils.saveTheme(this, when (item.itemId) {
+        R.id.menu_afterglow -> R.style.AppTheme_Afterglow
+        R.id.menu_tomorrow -> R.style.AppTheme_Tomorrow
+        else -> R.style.AppTheme
+      })
+      setContentView()
+      true
+    }
+    popupMenu.show()
   }
 
   private fun closeSoftKeyboard() {

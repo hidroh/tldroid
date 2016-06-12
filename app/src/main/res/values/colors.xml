@@ -8,4 +8,22 @@
     <color name="solarizedBase03">#002b36</color>
     <color name="solarizedBlue">#268bd2</color>
     <color name="solarizedYellow">#b58900</color>
+
+    <color name="afterglowHighlight">#333435</color>
+    <color name="afterglowAccent">#cc7832</color>
+    <color name="afterglowBackground">#2e2e2e</color>
+    <color name="afterglowForeground">#d6d6d6</color>
+    <color name="afterglowComment">#797979</color>
+    <color name="afterglowConstant">#6D9CBE</color>
+    <color name="afterglowDefinition">#FFC66D</color>
+    <color name="afterglowString">#b4c973</color>
+
+    <color name="tomorrowBackground">#1d1f21</color>
+    <color name="tomorrowHighlight">#373b41</color>
+    <color name="tomorrowForeground">#c5c8c6</color>
+    <color name="tomorrowConstant">#81a2be</color>
+    <color name="tomorrowDefinition">#de935f</color>
+    <color name="tomorrowString">#b5bd68</color>
+    <color name="tomorrowComment">#969896</color>
+    <color name="tomorrowAccent">#cc6666</color>
 </resources>

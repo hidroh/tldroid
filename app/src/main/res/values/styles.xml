@@ -2,31 +2,75 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
+        <!-- Color palette -->
         <item name="colorPrimary">@color/solarizedBase02</item>
         <item name="colorPrimaryDark">@color/grey900</item>
+        <item name="themedBackground">@color/solarizedBase03</item>
         <item name="colorAccent">@color/solarizedOrange</item>
-        <item name="android:windowBackground">@color/solarizedBase03</item>
-        <item name="android:colorBackground">?android:attr/windowBackground</item>
         <item name="android:textColorPrimary">@color/solarizedBase2</item>
         <item name="android:textColorSecondary">@color/solarizedBase1</item>
-        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
         <item name="android:textColorLink">@color/solarizedBlue</item>
-        <item name="colorKeywords">@color/solarizedBlue</item>
-        <item name="colorLiterals">@color/solarizedYellow</item>
-        <item name="windowActionModeOverlay">true</item>
+        <item name="colorDefinition">@color/solarizedBlue</item>
+        <item name="colorLiteral">@color/solarizedYellow</item>
+
+        <!-- Custom theme override -->
+        <item name="android:colorBackground">?attr/colorPrimary</item>
+        <item name="android:textColorHint">?android:attr/textColorSecondary</item>
         <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog</item>
     </style>
 
+    <style name="AppTheme.Afterglow">
+        <item name="colorPrimary">@color/afterglowHighlight</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="colorAccent">@color/afterglowAccent</item>
+        <item name="themedBackground">@color/afterglowBackground</item>
+        <item name="android:textColorPrimary">@color/afterglowForeground</item>
+        <item name="android:textColorSecondary">@color/afterglowComment</item>
+        <item name="android:textColorLink">@color/afterglowConstant</item>
+        <item name="colorDefinition">@color/afterglowDefinition</item>
+        <item name="colorLiteral">@color/afterglowString</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.Afterglow</item>
+    </style>
+
+    <style name="AppTheme.Tomorrow">
+        <item name="colorPrimary">@color/tomorrowHighlight</item>
+        <item name="colorPrimaryDark">@android:color/black</item>
+        <item name="themedBackground">@color/tomorrowBackground</item>
+        <item name="colorAccent">@color/tomorrowAccent</item>
+        <item name="android:textColorPrimary">@color/tomorrowForeground</item>
+        <item name="android:textColorSecondary">@color/tomorrowComment</item>
+        <item name="android:textColorLink">@color/tomorrowConstant</item>
+        <item name="colorDefinition">@color/tomorrowDefinition</item>
+        <item name="colorLiteral">@color/tomorrowString</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialog.Tomorrow</item>
+    </style>
+
     <style name="AppBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <!-- Color palette -->
         <item name="colorPrimary">@color/solarizedBase02</item>
-        <item name="android:colorBackground">?attr/colorPrimary</item>
         <item name="colorAccent">@color/solarizedOrange</item>
         <item name="android:textColorPrimary">@color/solarizedBase2</item>
         <item name="android:textColorSecondary">@color/solarizedBase1</item>
+
+        <!-- Custom theme override -->
+        <item name="android:colorBackground">?attr/colorPrimary</item>
         <item name="android:textColorHint">?android:attr/textColorSecondary</item>
         <item name="android:textColorLink">?attr/colorAccent</item>
     </style>
 
+    <style name="AppBottomSheetDialog.Afterglow">
+        <item name="colorPrimary">@color/afterglowHighlight</item>
+        <item name="colorAccent">@color/afterglowAccent</item>
+        <item name="android:textColorPrimary">@color/afterglowForeground</item>
+        <item name="android:textColorSecondary">@color/afterglowComment</item>
+    </style>
+
+    <style name="AppBottomSheetDialog.Tomorrow">
+        <item name="colorPrimary">@color/tomorrowHighlight</item>
+        <item name="colorAccent">@color/tomorrowAccent</item>
+        <item name="android:textColorPrimary">@color/tomorrowForeground</item>
+        <item name="android:textColorSecondary">@color/tomorrowComment</item>
+    </style>
 </resources>

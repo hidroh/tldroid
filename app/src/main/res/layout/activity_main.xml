@@ -6,14 +6,15 @@
     <data />
 
     <android.support.constraint.ConstraintLayout
+        android:background="?attr/themedBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/constraintLayout">
 
         <ImageButton
-            android:id="@+id/info_button"
-            android:contentDescription="@string/info"
-            android:src="@drawable/ic_info_white_24dp"
+            android:id="@+id/settings_button"
+            android:contentDescription="@string/settings"
+            android:src="@drawable/ic_settings_white_24dp"
             android:tint="?android:attr/textColorPrimary"
             android:background="?selectableItemBackgroundBorderless"
             android:padding="@dimen/padding"
@@ -24,6 +25,21 @@
             android:layout_marginEnd="@dimen/padding"
             app:layout_constraintTop_toTopOf="@id/constraintLayout"
             app:layout_constraintRight_toRightOf="@id/constraintLayout" />
+
+        <ImageButton
+            android:id="@+id/info_button"
+            android:contentDescription="@string/info"
+            android:src="@drawable/ic_info_white_24dp"
+            android:tint="?android:attr/textColorPrimary"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:layout_marginEnd="@dimen/padding"
+            app:layout_constraintTop_toTopOf="@id/settings_button"
+            app:layout_constraintRight_toLeftOf="@id/settings_button"
+            app:layout_constraintBottom_toBottomOf="@id/settings_button" />
 
         <ImageButton
             android:id="@+id/list_button"

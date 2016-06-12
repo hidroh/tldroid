@@ -12,7 +12,7 @@
         app:html="@{content}"
         app:htmlTextSize="@{@dimen/text_size}"
         app:htmlMargin="@{@dimen/activity_horizontal_margin}"
-        app:htmlBackgroundColor="@{android.R.attr.colorBackground}"
+        app:htmlBackgroundColor="@{io.github.hidroh.tldroid.R.attr.themedBackground}"
         app:htmlTextColor="@{android.R.attr.textColorPrimary}"
         app:htmlLinkColor="@{android.R.attr.textColorLink}"
         android:scrollbarStyle="insideOverlay"

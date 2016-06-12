@@ -1,7 +1,6 @@
 package io.github.hidroh.tldroid
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.databinding.DataBindingUtil
@@ -9,8 +8,8 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.provider.BaseColumns
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.widget.ResourceCursorAdapter
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.text.format.DateUtils
@@ -18,10 +17,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.AdapterView
-import android.widget.AutoCompleteTextView
-import android.widget.FilterQueryProvider
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
   private var mEditText: AutoCompleteTextView? = null
@@ -56,6 +53,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun showInfo() {
+    closeSoftKeyboard()
     val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater,
         R.layout.web_view, null, false)
     val lastRefreshed = PreferenceManager.getDefaultSharedPreferences(this)
@@ -71,21 +69,32 @@ class MainActivity : AppCompatActivity() {
         getString(R.string.info_html, lastRefreshedText, totalCommands) +
             getString(R.string.about_html))
     binding.root.id = R.id.web_view
-    AlertDialog.Builder(this).setView(binding.root).create().show()
+    val dialog = BottomSheetDialog(this)
+    dialog.setContentView(binding.root)
+    dialog.show()
   }
 
   private fun showList() {
+    closeSoftKeyboard()
+    val dialog = BottomSheetDialog(this)
+    val view = layoutInflater.inflate(R.layout.dialog_commands, null, false)
+    val listView = view.findViewById(android.R.id.list) as ListView
     val adapter = CursorAdapter(this)
     adapter.filter.filter("")
-    AlertDialog.Builder(this)
-        .setTitle(R.string.all_commands)
-        .setAdapter(adapter, DialogInterface.OnClickListener { dialog, which ->
-          val cursor = adapter.getItem(which) as Cursor? ?: return@OnClickListener
-          search(cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_NAME)),
-              cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_PLATFORM)))
-        })
-        .create()
-        .show()
+    listView.adapter = adapter
+    listView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
+      val cursor = adapter.getItem(position) as Cursor? ?: return@OnItemClickListener
+      search(cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_NAME)),
+          cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_PLATFORM)))
+
+    }
+    dialog.setContentView(view)
+    dialog.show()
+  }
+
+  private fun closeSoftKeyboard() {
+    (getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager)
+        .hideSoftInputFromWindow(mEditText!!.windowToken, 0)
   }
 
   private class CursorAdapter(context: Context) :

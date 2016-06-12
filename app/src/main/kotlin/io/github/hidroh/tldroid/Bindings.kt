@@ -77,7 +77,9 @@ object Bindings {
         toHtmlColor(context, textColor),
         toHtmlColor(context, linkColor),
         toHtmlPx(context, textSize),
-        toHtmlPx(context, margin))
+        toHtmlPx(context, margin),
+        toHtmlColor(context, R.attr.colorKeywords),
+        toHtmlColor(context, R.attr.colorLiterals))
   }
 
   private fun toHtmlColor(context: Context, @AttrRes colorAttr: Int): String {

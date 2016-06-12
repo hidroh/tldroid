@@ -6,4 +6,6 @@
     <color name="solarizedBase2">#eee8d5</color>
     <color name="solarizedBase02">#073642</color>
     <color name="solarizedBase03">#002b36</color>
+    <color name="solarizedBlue">#268bd2</color>
+    <color name="solarizedYellow">#b58900</color>
 </resources>

@@ -28,6 +28,8 @@ class MarkdownProcessor(private val platform: String?) {
     }
     cursor?.close()
     return if (TextUtils.isEmpty(markdown)) null else Processor.process(markdown)
+        .replace("{{", """<span class="literal">""")
+        .replace("}}", """</span>""")
   }
 
   private fun loadFromZip(context: Context, name: String, platform: String?, lastModified: Long): String? {

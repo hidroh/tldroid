@@ -55,8 +55,7 @@ android {
         warningsAsErrors true
         abortOnError true
         informational 'InvalidPackage', // https://github.com/square/okio/issues/58
-                'UnusedResources', // https://youtrack.jetbrains.com/issue/KT-7729
-                'NewApi' // TODO remove once Travis supports platform-tools 24
+                'UnusedResources' // https://youtrack.jetbrains.com/issue/KT-7729
         explainIssues false
         absolutePaths false
     }

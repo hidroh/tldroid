@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'jacoco'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "io.github.hidroh.tldroid"
         minSdkVersion 9
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 8
         versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -55,7 +55,8 @@ android {
         warningsAsErrors true
         abortOnError true
         informational 'InvalidPackage', // https://github.com/square/okio/issues/58
-                'UnusedResources' // https://youtrack.jetbrains.com/issue/KT-7729
+                'UnusedResources', // https://youtrack.jetbrains.com/issue/KT-7729
+                'NewApi' // TODO remove once Travis supports platform-tools 24
         explainIssues false
         absolutePaths false
     }
@@ -69,8 +70,8 @@ android {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-            'com.android.support:design:23.4.0',
-            'com.android.support.constraint:constraint-layout:1.0.0-alpha1',
+            'com.android.support:design:24.0.0',
+            'com.android.support.constraint:constraint-layout:1.0.0-alpha1', // TODO http://b.android.com/212128
             'com.github.rjeschke:txtmark:0.13',
             'com.squareup.moshi:moshi:1.2.0',
             'com.squareup.okio:okio:1.8.0'
@@ -82,7 +83,7 @@ dependencies {
             'org.assertj:assertj-core:1.7.1', // test against android.jar which uses JDK6
             'com.squareup.okhttp3:mockwebserver:3.3.1'
     androidTestCompile 'org.assertj:assertj-core:2.4.1',
-            'com.android.support:support-annotations:23.4.0',
+            'com.android.support:support-annotations:24.0.0',
             'com.android.support.test:runner:0.5',
             'com.android.support.test:rules:0.5',
             'com.android.support.test.espresso:espresso-core:2.2.2',

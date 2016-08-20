@@ -15,9 +15,12 @@
                         color: #%2$s;
                         margin: %5$fpx %5$fpx %5$fpx %5$fpx;
                     }
+                    h1 {display:none;}
                     a {color: #%3$s;}
                     pre {white-space: pre-wrap;}
-                    code {color: #%6$s; font-weight: bold;}
+                    code {color: #%6$s; font-weight: bold; padding-left: 1.2em;}
+                    ul {list-style:none; padding-left:0;}
+                    blockquote { font-size: larger }
                     .literal {color: #%7$s; font-weight: normal;}
                 </style>
             </head>
@@ -27,8 +30,10 @@
     </string>
     <string name="empty_html">
         <![CDATA[
-            <h1>This command is not yet available.</h1>
-            <h2><a href="https://github.com/tldr-pages/tldr/blob/master/CONTRIBUTING.md">Submit new command to tldr</a></h2>
+            <blockquote>
+                This command is not yet available.<br />
+                <a href="https://github.com/tldr-pages/tldr/blob/master/CONTRIBUTING.md">Submit new command to tldr</a>
+            </blockquote>
         ]]>
     </string>
     <string name="info_html">

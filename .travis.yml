@@ -29,6 +29,9 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_script:
+  - mkdir $ANDROID_HOME/licenses
+  - cp -rf .travis_licenses/* $ANDROID_HOME/licenses
 script: "./gradlew $TASK"
 env:
     - TASK="lintDebug"

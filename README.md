@@ -10,10 +10,10 @@
 **Requirements**
 - Latest Android SDK tools
 - Latest Android platform tools
-- Android SDK Build tools 24.0.0
+- Android SDK Build tools 24.0.1
 - Android SDK 24
 - Android Support Repository
-- Android Support Library 24.0.0
+- Android Support Library 24.2.0
 
 **Dependencies**
 

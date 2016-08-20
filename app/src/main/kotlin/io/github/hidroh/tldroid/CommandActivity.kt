@@ -10,13 +10,13 @@ import android.preference.PreferenceManager
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.ShareActionProvider
 import android.support.v7.widget.Toolbar
 import android.text.Html
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -68,6 +68,13 @@ class CommandActivity : ThemedActivity() {
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_run, menu)
     menuInflater.inflate(R.menu.menu_share, menu)
+    // disable share history
+    MenuItemCompat.setActionProvider(menu.findItem(R.id.menu_share),
+        object : ShareActionProvider(this) {
+          override fun onCreateActionView(): View? {
+            return null
+          }
+        })
     return super.onCreateOptionsMenu(menu)
   }
 

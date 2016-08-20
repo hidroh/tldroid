@@ -12,39 +12,40 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/warning"
-            android:text="@string/run_warning"
-            android:textColor="?android:attr/textColorSecondary"
-            app:monospace="@{true}"
-            android:textSize="@dimen/text_size"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            app:layout_constraintTop_toTopOf="@id/constraintLayout"
-            app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
-            app:layout_constraintRight_toRightOf="@id/constraintLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/prompt"
-            android:text="> "
+            android:id="@+id/sign"
+            android:text=">"
             android:textSize="@dimen/text_size_medium"
             android:textColor="?android:attr/textColorHint"
             app:monospace="@{true}"
             android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="?attr/listPreferredItemHeightSmall"
-            app:layout_constraintTop_toBottomOf="@id/warning"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
             app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/prompt"
+            tools:text="echo"
+            android:textSize="@dimen/text_size_medium"
+            android:textColor="?attr/colorDefinition"
+            app:monospace="@{true}"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/listPreferredItemHeightSmall"
+            app:layout_constraintTop_toTopOf="@id/constraintLayout"
+            app:layout_constraintLeft_toRightOf="@id/sign"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             tools:ignore="HardcodedText" />
 
         <EditText
             android:id="@id/edit_text"
-            tools:hint="ls"
+            tools:text="hello world"
             android:textSize="@dimen/text_size_medium"
+            android:textColor="?attr/colorLiteral"
             app:monospace="@{true}"
             android:inputType="textNoSuggestions"
             android:imeOptions="actionGo"

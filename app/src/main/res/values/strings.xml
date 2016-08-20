@@ -47,7 +47,7 @@
     <string name="info">Information</string>
     <string name="never">Never</string>
     <string name="run">Run</string>
-    <string name="run_warning">* Not all commands are available on Android. Run at your own risk.</string>
+    <string name="run_warning">Command may work differently on Android; run at your own risk.</string>
     <string name="all_commands">All commands</string>
     <string name="settings">Settings</string>
     <string name="solarized">Solarized</string>

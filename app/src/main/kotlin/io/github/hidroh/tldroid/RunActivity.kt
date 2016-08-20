@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.AsyncTask
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.util.Pair
 import android.text.TextUtils
 import android.view.View
@@ -25,6 +26,9 @@ class RunActivity : ThemedActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     DataBindingUtil.setContentView<ViewDataBinding>(this, R.layout.activity_run)
+    val snackbar = Snackbar.make(findViewById(android.R.id.content),
+        R.string.run_warning, Snackbar.LENGTH_INDEFINITE)
+    snackbar.setAction(android.R.string.ok, { snackbar.dismiss() }).show()
     mOutput = findViewById(R.id.output) as TextView?
     mError = findViewById(R.id.error) as TextView?
     val command = intent.getStringExtra(EXTRA_COMMAND)

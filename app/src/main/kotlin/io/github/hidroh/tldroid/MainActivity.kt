@@ -35,12 +35,12 @@ class MainActivity : ThemedActivity() {
     findViewById(R.id.list_button)!!.setOnClickListener { showList() }
     findViewById(R.id.settings_button)!!.setOnClickListener { showThemeOptions() }
     mEditText = findViewById(R.id.edit_text) as AutoCompleteTextView?
-    mEditText!!.setOnEditorActionListener { v, actionId, event ->
+    mEditText!!.setOnEditorActionListener { v, actionId, _ ->
       actionId == EditorInfo.IME_ACTION_SEARCH && search(v.text.toString(), null)
     }
     mEditText!!.setAdapter(CursorAdapter(this))
     mEditText!!.onItemClickListener = AdapterView.OnItemClickListener {
-      parent, view, position, id ->
+      _, view, _, _ ->
       val text = (view.findViewById(android.R.id.text1) as TextView).text
       val platform = (view.findViewById(android.R.id.text2) as TextView).text
       search(text.toString(), platform)
@@ -89,7 +89,7 @@ class MainActivity : ThemedActivity() {
     val adapter = CursorAdapter(this)
     adapter.filter.filter("")
     listView.adapter = adapter
-    listView.onItemClickListener = AdapterView.OnItemClickListener { adapterView, view, position, id ->
+    listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
       val cursor = adapter.getItem(position) as Cursor? ?: return@OnItemClickListener
       search(cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_NAME)),
           cursor.getString(cursor.getColumnIndex(TldrProvider.CommandEntry.COLUMN_PLATFORM)))
@@ -122,13 +122,12 @@ class MainActivity : ThemedActivity() {
   private class CursorAdapter(context: Context) :
       ResourceCursorAdapter(context, R.layout.dropdown_item, null, false) {
 
-    private val mInflater: LayoutInflater
+    private val mInflater: LayoutInflater = LayoutInflater.from(context)
     private var mQueryString: String? = null
 
     init {
-      mInflater = LayoutInflater.from(context)
       filterQueryProvider = FilterQueryProvider { constraint ->
-        mQueryString = if (constraint != null) constraint.toString() else ""
+        mQueryString = constraint?.toString() ?: ""
         context.contentResolver.query(TldrProvider.URI_COMMAND,
             arrayOf(BaseColumns._ID,
                 TldrProvider.CommandEntry.COLUMN_NAME,

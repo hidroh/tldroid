@@ -6,12 +6,8 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class NetworkConnection(url: String) {
-  private var connection: HttpURLConnection?
+  private var connection: HttpURLConnection? = try { URL(url).openConnection() as HttpURLConnection? } catch (e: IOException) { null }
   private var inputStream: InputStream? = null
-
-  init {
-    connection = try { URL(url).openConnection() as HttpURLConnection? } catch (e: IOException) { null }
-  }
 
   fun connect() {
     try { connection?.connect() } catch (e: IOException) { }

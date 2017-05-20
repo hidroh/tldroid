@@ -1,25 +1,27 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "io.github.hidroh.tldroid"
         minSdkVersion 9
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 10
         versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        resConfigs "en"
     }
 
     buildTypes {
         debug {
             testCoverageEnabled true
             minifyEnabled true
-            shrinkResources true
+            useProguard false
             proguardFile getDefaultProguardFile('proguard-android-optimize.txt')
             proguardFile 'proguard-rules.pro'
         }
@@ -68,31 +70,27 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:design:24.2.0',
-            'com.android.support.constraint:constraint-layout:1.0.0-alpha7', // TODO http://b.android.com/212128
+    implementation "com.android.support:design:$supportLibraryVersion",
+            'com.android.support.constraint:constraint-layout:1.0.2',
             'com.github.rjeschke:txtmark:0.13',
             'com.squareup.moshi:moshi:1.2.0',
-            'com.squareup.okio:okio:1.8.0'
-    kapt "com.android.databinding:compiler:$androidToolsVersion"
-    testCompile 'junit:junit:4.12',
+            'com.squareup.okio:okio:1.8.0',
+            "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    kapt "com.android.databinding:compiler:2.3.2"
+    testImplementation 'junit:junit:4.12',
             'org.mockito:mockito-core:1.10.19',
             'org.powermock:powermock-module-junit4:1.6.2',
             'org.powermock:powermock-api-mockito:1.6.2',
             'org.assertj:assertj-core:1.7.1', // test against android.jar which uses JDK6
             'com.squareup.okhttp3:mockwebserver:3.3.1'
-    androidTestCompile 'org.assertj:assertj-core:2.4.1',
-            'com.android.support:support-annotations:24.2.0',
+    androidTestImplementation 'org.assertj:assertj-core:2.4.1',
+            "com.android.support:support-annotations:$supportLibraryVersion",
             'com.android.support.test:runner:0.5',
             'com.android.support.test:rules:0.5',
             'com.android.support.test.espresso:espresso-core:2.2.2',
             'com.android.support.test.espresso:espresso-idling-resource:2.2.2',
             'com.android.support.test.espresso:espresso-intents:2.2.2',
             'com.android.support.test.espresso:espresso-web:2.2.2'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-
-kapt {
-    generateStubs = true
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest', 'testDebugUnitTest']) {
@@ -106,12 +104,9 @@ task jacocoTestReport(type: JacocoReport, dependsOn: ['connectedAndroidTest', 't
             include: ['**/*.exec', '**/*.ec']
     )
     reports {
-        html.destination "${buildDir}/reports/jacoco/html"
+        html.destination file("${buildDir}/reports/jacoco/html")
     }
     doLast {
         println "jacoco report generated to file://${reports.html.destination}/index.html"
     }
-}
-repositories {
-    mavenCentral()
 }

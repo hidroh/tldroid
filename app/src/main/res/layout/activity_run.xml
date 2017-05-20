@@ -51,7 +51,7 @@
             android:imeOptions="actionGo"
             android:background="@null"
             android:gravity="center_vertical"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="?attr/listPreferredItemHeightSmall"
             app:layout_constraintTop_toTopOf="@id/prompt"
             app:layout_constraintLeft_toRightOf="@id/prompt"
@@ -63,8 +63,8 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin" />
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/prompt"
             app:layout_constraintLeft_toLeftOf="@id/constraintLayout"
             app:layout_constraintRight_toRightOf="@id/constraintLayout"

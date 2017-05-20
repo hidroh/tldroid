@@ -135,7 +135,7 @@ class CommandActivity : ThemedActivity() {
 
     override fun onPostExecute(s: String?) {
       if (commandActivity.get() != null) {
-        commandActivity.get().render(s)
+        (commandActivity.get() as CommandActivity).render(s)
       }
     }
   }

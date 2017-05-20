@@ -33,7 +33,7 @@ class RunActivity : ThemedActivity() {
     mError = findViewById(R.id.error) as TextView?
     val command = intent.getStringExtra(EXTRA_COMMAND)
     (findViewById(R.id.prompt) as TextView).append(command)
-    (findViewById(R.id.edit_text) as EditText).setOnEditorActionListener { v, actionId, event ->
+    (findViewById(R.id.edit_text) as EditText).setOnEditorActionListener { v, _, _ ->
       execute(command, v.text.toString().trim())
       true
     }
@@ -92,7 +92,7 @@ class RunActivity : ThemedActivity() {
 
     override fun onPostExecute(output: Pair<String, String>) {
       if (mRunActivity.get() != null) {
-        mRunActivity.get().display(output)
+        (mRunActivity.get() as RunActivity).display(output)
       }
     }
   }

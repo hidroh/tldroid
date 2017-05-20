@@ -82,7 +82,7 @@
             android:completionThreshold="1"
             android:background="@null"
             android:popupBackground="?attr/colorPrimary"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="@id/prompt"
             app:layout_constraintLeft_toRightOf="@id/prompt"
